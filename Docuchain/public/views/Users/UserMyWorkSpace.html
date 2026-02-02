@@ -1,0 +1,38 @@
+<div
+  class="app-content"
+  ng-app="dapp"
+  ng-controller="UserMyWorkSpceController"
+  ng-init="getAllShipList()"
+>
+  <div class="docubodyTitle">
+    <ul id="breadcrumb">
+      <li>
+        <a ui-sref="dapp.userMyWorkspace">
+          <span class="icon icon-beaker"> </span>My Workspace</a
+        >
+      </li>
+    </ul>
+  </div>
+  <div class="docuchainContent">
+    <div class="docuuservesseldoc">
+      <div class="row">
+        <div class="docuvessellist" ng-repeat="vessel in groupVesselList">
+          <a href="javascript:void(0);" ng-click="groupList(vessel)">
+            <div class="uservessellist">
+              <img
+                ng-if="!vessel.shipProfilePicPath"
+                ng-src="image/shipname.png"
+              />
+              <img
+                ng-if="vessel.shipProfilePicPath"
+                ng-src="{{vessel.shipProfilePicPath}}"
+              />
+              <h1>{{vessel.shipName}}</h1>
+              <h1>{{vessel.officialNo}}</h1>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

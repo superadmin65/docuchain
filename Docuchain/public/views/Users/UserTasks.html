@@ -1,0 +1,769 @@
+<section id="container" ng-app="dapp.UserTasksController" ng-init="userTaskListAssignedByUser();userTaskListAssignedToYou();getUserProfileList();getShipProfileList();"  ng-controller="UserTasksController">
+        
+<div class="app-content">
+    <div class="docubodyTitle">
+        <ul id="breadcrumb">
+                <li>
+                        <a href="javascript:void(0);" class="icon icon-beaker">Tasks</a>
+                    </li>
+
+        </ul>
+        <div class="bttnGroup">
+            <button type="button" class="addNew" data-toggle="modal" data-target="#createtask" data-backdrop="static">
+                <img src="image/add-user-button.png">Create Task</button>
+        </div>
+    </div>
+    <div class="docuContent">
+        <div class="vesslesDocumentsTable">
+            <div class="tasksManagement">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tab" role="tabpanel">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li role="presentation" class="active">
+                                    <a aria-controls="home" role="tab" data-toggle="tab"  ng-click="change('tabOne')">Task Assigned by you</a>
+                                </li>
+                                <li role="presentation">
+                                    <a  aria-controls="profile" role="tab" data-toggle="tab" ng-click="change('tabTwo')">Task Assigned to you</a>
+                                </li>
+                            </ul>
+                            <!-- Tab panes -->
+                            
+                            <div class="tab-content tabs">
+                                    <div ng-switch="myVar">   
+                                      <div  ng-switch-when="tabOne" role="tabpanel" class="tab-pane in active" id="Section1"> 
+                                    <div class="taskmanagementtable">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <div class="datatableEntry">
+                                                    <label>Show
+                                                        <input type="text"ng-model="itemsPerPageForHistory">of
+                                                        <span>{{taskAssignedByUser.length}}</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="docuchainSearchbox">
+                                                    <div class="searchInput">
+                                                        <input type="text" placeholder="Search" ng-model="searchText">
+                                                        <button type="button" class="searchIcon">
+                                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12 col-xs-12">
+                                                <div class="taskMangeTable">
+                                                    <table>
+                                                        <thead>
+                                                            <tr>
+                                                               
+                                                                <th class="addwidth150" ng-click="orderByField='taskName'; reverseSort = !reverseSort">Task Name <i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                                                <th class="addwidth150" ng-click="orderByField='updateDStartDate'; reverseSort = !reverseSort">Start Date <i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                                                <th class="addwidth150"ng-click="orderByField='updateEndDate'; reverseSort = !reverseSort">End Date <i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                                                <th class="addwidth150" ng-click="orderByField='taskStatus'; reverseSort = !reverseSort">Status <i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                                                <th class="text-center addwidth150">Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>                                                                            
+                                                              <tr   dir-paginate ="assignedByUser in taskAssignedByUser | filter:searchText |itemsPerPage:itemsPerPageForHistory | orderBy:'taskName' | orderBy:orderByField:reverseSort" current-page="currentPage">
+                                                                <td>{{assignedByUser.taskName}}</td>
+                                                                <td>{{assignedByUser.updateDStartDate}}</td>
+                                                                <td>{{assignedByUser.updateEndDate}}</td>
+                                                                <td>{{assignedByUser.taskStatus}}</td>                                                                
+                                                                <td class="text-center"> 
+                                                                    <button type="button" ng-click="getViewTaskById(assignedByUser)" class="btned editBtn" data-toggle="modal" data-target="#viewtasks" data-backdrop="static">
+                                                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                                                    </button>
+                                                                    <button type="button" ng-click="getUpdateTaskId(assignedByUser)" fupdate class="btned editBtn" data-toggle="modal" data-target="#updatetask" data-backdrop="static">
+                                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                                    </button>
+                                                                    <button type="button" ng-click="getDeleteTaskId(assignedByUser.taskId)" class="btned deleteBtn" data-toggle="modal" data-target="#delete" data-backdrop="static">
+                                                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>                                                        
+                                                        </table>
+                                                        
+                                                                <!-- <td class="text-center">
+                                                                    <div class="userextensioncheckbox">
+                                                                        <input class="inp-cbx" id="cbx16" type="checkbox" style="display: none;" />
+                                                                        <label class="cbx" for="cbx16">
+                                                                            <span>
+                                                                                <svg width="12px" height="10px" viewbox="0 0 12 10">
+                                                                                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                                                                </svg>
+                                                                            </span>
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                                <td>Task Name</td>
+                                                                <td>2018-07-31
+                                                                    <span>11:21</span>
+                                                                </td>
+                                                                <td>2018-08-01
+                                                                    <span>18:39</span>
+                                                                </td>
+
+                                                                <td>
+                                                                    Yet To Start
+                                                                </td>
+
+                                                                <td class="text-center">
+                                                                    <button type="button" class="btned editBtn" data-toggle="modal" data-target="#viewtasks" data-backdrop="static">
+                                                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                                                    </button>
+                                                                    <button type="button" class="btned editBtn" data-toggle="modal" data-target="#updatetask" data-backdrop="static">
+                                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                                    </button>
+                                                                    <button type="button" class="btned deleteBtn" data-toggle="modal" data-target="#delete" data-backdrop="static">
+                                                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td class="text-center">
+                                                                    <div class="userextensioncheckbox">
+                                                                        <input class="inp-cbx" id="cbx17" type="checkbox" style="display: none;" />
+                                                                        <label class="cbx" for="cbx17">
+                                                                            <span>
+                                                                                <svg width="12px" height="10px" viewbox="0 0 12 10">
+                                                                                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                                                                </svg>
+                                                                            </span>
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                                <td>Task Name</td>
+                                                                <td>2018-07-31
+                                                                    <span>11:21</span>
+                                                                </td>
+                                                                <td>2018-08-01
+                                                                    <span>18:39</span>
+                                                                </td>
+
+                                                                <td>
+                                                                    Yet To Start
+                                                                </td>
+
+                                                                <td class="text-center">
+                                                                    <button type="button" class="btned editBtn" data-toggle="modal" data-target="#viewtasks" data-backdrop="static">
+                                                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                                                    </button>
+                                                                    <button type="button" class="btned editBtn" data-toggle="modal" data-target="#updatetask" data-backdrop="static">
+                                                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                                    </button>
+                                                                    <button type="button" class="btned deleteBtn" data-toggle="modal" data-target="#delete" data-backdrop="static">
+                                                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+
+                                                        </table>
+                                                </div> -->
+                                                <!-- <div class="vesselstablebottom">
+                                                    <ul class="pagination pull-right">
+                                                        <li class="disabled">
+                                                            <a href="#">
+                                                                Previous
+                                                            </a>
+                                                        </li>
+                                                        <li class="active">
+                                                            <a href="javascript:void(0);">1</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:void(0);">2</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:void(0);">3</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:void(0);">4</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:void(0);">
+                                                                Next
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+
+                                                </div> -->
+                                                <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true">
+                                                    </dir-pagination-controls>
+                                                    <div class="vesselstablebottom" ng-if="taskAssignedByUser.length == 0">No Records Found.</div>
+                                                    
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+								</div>
+								</div>
+                                <div ng-switch="myVar">
+                                <div  ng-switch-when="tabTwo" role="tabpanel" class="tab-pane" id="Section2">
+                                    <div class="taskmanagementtable">
+                                        <div class="row">
+                                          <div class="col-lg-6">
+                                                <div class="datatableEntry">
+                                                    <label>Show
+                                                        <input type="text" ng-model="itemsPerPageForHistory">of
+                                                        <span>{{taskAssignedToUser.length}}</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="docuchainSearchbox">
+                                                    <div class="searchInput">
+                                                        <input type="text" placeholder="Search" ng-model="searchText">
+                                                        <button type="button" class="searchIcon">
+                                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    
+                                        <div class="row">
+                                            <div class="col-lg-12 col-xs-12">
+                                              <div class="taskMangeTable">
+                                                    <table>
+                                                        <thead>
+                                                            <tr>
+                                                                <!-- <th class="text-center addwidth50">
+                                                                    <div class="userextensioncheckbox">
+                                                                        <input class="inp-cbx" id="cbx18" type="checkbox" style="display: none;" />
+                                                                        <label class="cbx" for="cbx18">
+                                                                            <span>
+                                                                                <svg width="12px" height="10px" viewbox="0 0 12 10">
+                                                                                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                                                                </svg>
+                                                                            </span>
+                                                                        </label>
+                                                                    </div>
+                                                                </th> -->
+                                                                <th ng-click="orderByField='taskName'; reverseSort = !reverseSort">Task Name <i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                                                <th ng-click="orderByField='updateDStartDate'; reverseSort = !reverseSort">Start Date<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                                                <th ng-click="orderByField='updateEndDate'; reverseSort = !reverseSort">End Date<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                                                <th ng-click="orderByField='userName'; reverseSort = !reverseSort">Assigned By<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                                                <th ng-click="orderByField='taskStatus'; reverseSort = !reverseSort">Status <i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                                                <th>Actions</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody dir-paginate ="userTaskListAssignedToYou in taskAssignedToUser | filter:searchText |itemsPerPage:itemsPerPageForHistory  | orderBy:'taskName' | orderBy:orderByField:reverseSort" current-page="currentPage" current-page="currentPage">
+                                                                <tr>
+                                                                <!-- <td class="text-center">
+                                                                    <div class="userextensioncheckbox">
+                                                                        <input class="inp-cbx" id="cbx19" type="checkbox" style="display: none;" />
+                                                                        <label class="cbx" for="cbx19">
+                                                                            <span>
+                                                                                <svg width="12px" height="10px" viewbox="0 0 12 10">
+                                                                                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                                                                </svg>
+                                                                            </span>
+                                                                        </label>
+                                                                    </div>
+                                                                </td> -->
+                                                                <td>{{userTaskListAssignedToYou.taskName}}</td>
+                                                                <td>{{userTaskListAssignedToYou.updateDStartDate}}</td>
+                                                                <td>{{userTaskListAssignedToYou.updateEndDate}}</td>
+                                                                <td>{{userTaskListAssignedToYou.userName}}</td>                                                                    
+                                                                <td>{{userTaskListAssignedToYou.taskStatus}}</td>
+
+
+                                                                <td class="text-center">
+                                                                    <button type="button" ng-click="getViewTaskById(userTaskListAssignedToYou)" data-toggle="modal" data-target="#viewtaskaty" data-backdrop="static" class="btned editBtn">
+                                                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <!-- <td class="text-center">
+                                                                    <div class="userextensioncheckbox">
+                                                                        <input class="inp-cbx" id="cbx20" type="checkbox" style="display: none;" />
+                                                                        <label class="cbx" for="cbx20">
+                                                                            <span>
+                                                                                <svg width="12px" height="10px" viewbox="0 0 12 10">
+                                                                                    <polyline points="1.5 6 4.5 9 10.5 1"></polyline>
+                                                                                </svg>
+                                                                            </span>
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                                <td>Task Name</td>
+                                                                <td>2018-07-31
+                                                                    <span>11:21</span>
+                                                                </td>
+                                                                <td>2018-08-01
+                                                                    <span>18:39</span>
+                                                                </td>
+                                                                <td>prasath</td>
+                                                                <td>
+                                                                    In Progress
+                                                                </td> -->
+
+                                                                <!-- <td class="text-center">
+                                                                    <button type="button" class="btned editBtn">
+                                                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                                                    </button>
+                                                                </td> -->
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div> 
+                                                <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true">
+                                                    </dir-pagination-controls>
+                                                <div class="vesselstablebottom" ng-if="taskAssignedToUser.length == 0">No Records Found.</div>
+                                                <!-- <div class="vesselstablebottom">
+                                                    <ul class="pagination pull-right">
+                                                        <li class="disabled">
+                                                            <a href="#">
+                                                                Previous
+                                                            </a>
+                                                        </li>
+                                                        <li class="active">
+                                                            <a href="javascript:void(0);">1</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:void(0);">2</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:void(0);">3</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:void(0);">4</a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:void(0);">
+                                                                Next
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                       
+                    
+                
+            </div> 
+        </div>
+    </div>
+    <div class="preloader" ng-show="loader">
+        <div id="cssload-loader">
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Popup -->
+<div class="deleteMessage">
+    <div class="modal fade" id="delete" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Task Delete</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="delete-group-body">
+                        <p>
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Are you sure you want to delete task?</p>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"  ng-click="deleteTaskById()" class="btnd buttn-delete">Yes</button>
+                    <button type="button" class="btnd buttn-no" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+     <!-- User Create Task -->
+     <div class="creatTasks usertaskbk">
+        <div class="modal fade" id="createtask" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Create Task</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="">
+                        <div class="createtaskbody usertaskbodyselect">
+                            <form name="createTaskFormNameUser">
+                            <div class="radio-bttn">
+                                <div class="inline-radio">
+                                    <input type="radio" name="somethign" value="1" ng-model="createTask.checkboxSelection" />
+                                    <label for="radio-1" class="radio-label">Ship Related task</label>
+                                </div>
+                                <div class="inline-radio">
+                                    <input type="radio" name="somethign" value="2" ng-model="createTask.checkboxSelection" />
+                                    <label for="radio-2" class="radio-label">Others</label>
+
+                                </div>
+                            </div>
+                            <div class="form" name="createtaskForm">
+                                <div class="form-group" ng-show="createTask.checkboxSelection==1">
+                                    <label>Vessel</label>
+                                    <div class="tasksselect">
+                                        <select name="taskStatus"  ng-model="createTask.shipId">
+                                            <option value="">Select Vessel</option>
+                                            <option ng-repeat="ship in shipList | orderBy:'shipName'" value="{{ship.id}}">{{ship.shipName}}</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="form-group">
+                                        <label>User</label>
+                                <ui-select multiple ng-model="createTask.selectedUsers" theme="bootstrap" close-on-select="true" title="Choose  User Type"
+                                    remove-selected="false"  custom-focus class="text-box" required>
+                                    <ui-select-match placeholder="Select UserType...">{{$item.userName}}</ui-select-match>
+                                    <ui-select-choices repeat="user in userLists | filter: $select.search | orderBy:'userName'">
+                                        <div ng-bind="user.userName"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                                <!-- <div class="form-group">
+                                    <label>User Option</label>
+                                    <div class="tasksselect">
+                                        <select>
+                                            <option selected>User Multiselect</option>
+                                            <option value='techmanager'>techmanager</option>
+                                            <option value='commercialmgr'>commercialmgr</option>
+                                        </select>
+                                    </div>
+                                </div>  -->
+                                <div class="form-group">
+                                    <label>Task Name</label>
+                                    <input type="text" custom-focus class="text-box" placeholder="Task Name" ng-model="createTask.taskName" required>
+                                    <!-- <div ng-show="createtaskForm.$submitted || createtaskForm.taskName.$touched">
+                                        <div ng-show="createtaskForm.taskName.$error.required" style="color:red;">Task name required
+                                        </div>
+                                        <span class="alert" style="color:red;" ng-show="createtaskForm.taskname.$error.pattern">Please enter alpha numeric characters only</span>
+                                    </div> -->
+                                </div>
+                                <div class="form-group">
+                                    <label>Task Details</label>
+                                    <input type="text"  custom-focus class="text-box" placeholder="Task Details" ng-model="createTask.taskDetails" required>
+                                    <!-- <div ng-show="createtaskForm.$submitted || createtaskForm.taskdetails.$touched">
+                                        <div ng-show="createtaskForm.taskdetails.$error.required" style="color:red;">Please enter task details
+                                        </div>
+                                        <span class="alert" style="color:red;" ng-show="createtaskForm.taskdetails.$error.pattern">Please enter alpha numeric characters only</span>
+                                    </div> -->
+                                </div>
+                                <div class="form-group">
+                                    <label>Start Date</label>
+                                    <div class="datepickerinput">
+                                        <!-- <input type="text" placeholder="Start Date">
+                                        <i class="fa fa-calendar" aria-hidden="true"></i> -->
+                                        <input custom-focus class="text-box" placeholder="Start Date" moment-picker="ctrl.startDate" locale="en" format="DD-MM-YYYY HH mm"
+                                            ng-model="createTask.startDate" min-date="mindate" ng-model-options="{ updateOn: 'blur' }" required>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>End Date</label>
+                                    <div class="datepickerinput">
+                                        <!-- <input type="text" placeholder="End Date">
+                                        <i class="fa fa-calendar" aria-hidden="true"></i> -->
+                                        <input custom-focus class="text-box" placeholder="Select End date..." moment-picker="ctrl.endDate" locale="en" format="DD-MM-YYYY HH mm"
+                                            ng-model="createTask.endDate" min-date="mindate" ng-model-options="{ updateOn: 'blur' }" required>
+
+                                    </div>
+                                </div>
+                                
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer1">
+                        <button type="button" class="btngeo clearbtn">CLEAR</button>
+                        <button type="button" class="btngeo submitbtn clr448aff" data-dismiss="modal" ng-disabled="createTaskFormNameUser.$invalid" ng-click="createTaskForUser(createTask)">SUBMIT</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="preloader" ng-show="loader">
+            <div id="cssload-loader">
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Updated Task -->
+    <div class="updatedTasks">
+        <div class="modal fade" id="updatetask" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Update Task</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="">
+                        <div class="createtaskbody">
+                            <div class="form">
+                                <div  ng-show="updatetask.shipName != undefined">
+                                <div class="form-group">
+                                    <label>Vessel </label>
+                                    <!-- <input type="text" placeholder="ship name" ng-model="updatetask.shipName"> -->
+                                </div>
+                                <div class="tasksselect">
+                                    <select name="taskStatus" ng-model="updatetask.shipName"  custom-focus class="text-box" required>
+                                        <option>Select Vessel</option>
+                                        <option ng-selected="updatetask.shipName == ship.shipName"  ng-repeat="ship in shipList | orderBy:'shipName'" value="{{ship.id}}">{{ship.shipName}}</option>
+                                    </select>
+                                </div></div>
+                                <!-- <div class="form-group">
+                                    <label>User Option</label>
+                                    <div class="tasksselect"  >
+                                        <select ng-selected="updatetask.userOption">
+                                            <option value='1'>techmanager</option>
+                                            <option value='2'>commercialmgr</option>
+                                        </select>
+                                    </div>
+                                 <span class="error">This is value required</span> 
+                                </div> -->
+
+                                <div class="form-group user-opt">
+                                        <label>
+                                          User 
+                                        </label>
+                                        <!-- <searchable-multiselect class="searchable-select caret-down" display-attr="user" selected-items="taskUsers" all-items="taskUserList"
+                                          remove-item="removeUser(item)" add-item="addUser(item)">
+                                        </searchable-multiselect> -->
+                                      </div>
+                                      <div class="form-group">
+                                <ui-select multiple ng-model="updatetask.updatetaskUsers" theme="bootstrap"  custom-focus class="text-box" close-on-select="true" title="Choose  User Type"
+                                    remove-selected="false" required>
+                                    <ui-select-match placeholder="Select UserType...">{{$item.userName}}</ui-select-match>
+                                    <ui-select-choices repeat="user in userLists | filter: $select.search | orderBy:'userName'">
+                                        <div ng-bind="user.userName"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                                <div class="form-group">
+                                    <label>Task Name</label>
+                                    <input type="text" placeholder="Task Name" ng-model="updatetask.taskName" readonly>
+                                    <!-- <span class="error">This is value required</span> -->
+                                </div>
+                                <div class="form-group">
+                                    <label>Task Details</label>
+                                    <input type="text" placeholder="Task Details" ng-model="updatetask.taskDetails"  custom-focus class="text-box" required>
+                                    <!-- <span class="error">This is value required</span> -->
+                                </div>
+                                <!-- <div class="form-group">
+                                    <label>Start Date</label>
+                                    <div class="datepickerinput">
+                                        <input type="text" placeholder="Start Date" ng-model="updatetask.updateDStartDate"  custom-focus class="text-box" required>
+                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>End Date</label>
+                                    <div class="datepickerinput">
+                                        <input type="text" placeholder="End Date" ng-model="updatetask.updateEndDate"  custom-focus class="text-box" required>
+                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                    </div>
+                                </div> -->
+                                <div class="form-group">
+                                        <label>
+                                          Start Date
+                                        </label>
+                                        <div class="datepicicon" ng-model="updateSDate">
+                                          <i class="fas fa-calendar-alt"></i>
+                                               <input class="form-control"  placeholder="{{updatetask.updateDStartDate}}" moment-picker="updateSDate" locale="en" format="YYYY-MM-DD HH mm"
+                                            ng-model="updatetask.startDate" min-date="mindate" ng-model-options="{ updateOn: 'blur' }">
+                                        </div>
+                                        <!-- <input type="text" placeholder="Start Date" value="{{ updateSDate }}">
+                                        <div class="datepicicon" moment-picker="updateSDate">
+                                          <input class="form-control" format="MM/dd/yyyy HH:MM A" ng-model="updateSDate" placeholder="{{updatetask.startDate}}" ng-model-options="{updateOn: 'blur'}">
+                                          <i class="fas fa-calendar-alt"></i> -->
+                      
+                                        </div>
+                                        <div class="form-group">
+                                          <label>
+                                            End Date
+                                          </label>
+                                          <div class="datepicicon" ng-model="updateEDate">
+                                            <i class="fas fa-calendar-alt"></i>
+                                                 <input class="form-control"placeholder="{{updatetask.updateEndDate}}" moment-picker="updateEDate" locale="en" format="YYYY-MM-DD HH mm"
+                                              ng-model="updatetask.endDate" min-date="mindate" ng-model-options="{ updateOn: 'blur' }">
+                                          </div>
+                                          <!-- <input type="text" placeholder="End Date" value="{{ updateEDate }}"> -->
+                                          <!-- <div class="datepicicon" moment-picker="updateEDate">
+                                            <input class="form-control" ng-model="updateEDate" placeholder="{{updatetask.endDate}}" ng-model-options="{updateOn: 'blur'}">
+                                            <i class="fas fa-calendar-alt"></i>
+                                          </div> -->
+                                        </div>
+                                <div class="form-group">
+                                        <label>
+                                               Status
+                                              </label>
+                                              <input type="text" ng-model="updatetask.taskStatus"  custom-focus class="text-box" ng-show="updatetask.taskStatus === 'Completed' || updatetask.taskStatus === 'Rejected' " readonly>
+                                    <select name="taskStatus" ng-model="updatetask.taskStatusId"  custom-focus class="text-box" ng-show="updatetask.taskStatus != 'Completed' && updatetask.taskStatus != 'Rejected' ">                                        
+                                        <option ng-repeat="status in statusAll" ng-selected="updatetask.taskStatusId==status.taskStatusId" value="{{status.taskStatusId}}" >{{status.taskStatus}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer1">
+                        <button type="button" class="btngeo clearbtn">Clear</button>
+                        <button type="button" class="btngeo submitbtn clr448aff" ng-click="updateShipTask(updatetask)">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="preloader" ng-show="loader">
+            <div id="cssload-loader">
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Create Tasks -->
+     <div class="viewtasks assigneduserstatus">
+        <div class="modal fade" id="viewtasks" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Assigned User Status</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="viewtasksbody">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>User Name</th>
+                                        <th>Task Status</th>
+                                        <th>Comments</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="user in viewTaskByUsers.userProfileInfos">
+                                            <td>{{user.userName}}</td>                                               
+                                                <td><p class="">{{viewTaskByUsers.taskStatus}}</p></td>
+                                                <td>{{viewTaskByUsers.comments}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--<div class="modal-footer1">
+                    <button type="button" class="btngeo clearbtn">Clear</button>
+                    <button type="button" class="btngeo submitbtn clr448aff" data-dismiss="modal">Update</button>
+                </div> -->
+                </div>
+            </div>
+        </div>
+    </div> 
+    <!-- View Task Details  To Users-->
+  <div class="view-task-assigntoy">
+        <div class="modal fade" id="viewtaskaty" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">View task assigned to you</h4>
+                <button type="button" class="close" ng-click="cancelInput(assignedTask)">&times;</button>
+              </div>
+              <div class="modal-body">
+                <div class="view-assignty-body">
+                  <form name="assignedtoyouform">
+                    <div class="form-group">
+                      <label>
+                        Task Name
+                      </label>
+                      <input type="text" ng-model="viewTaskByUsers.taskName" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label>
+                        Start Date
+                      </label>
+                      <input type="text" ng-model="viewTaskByUsers.updateDStartDate" min-date="mindate" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label>
+                        End Date
+                      </label>
+                      <input type="text" ng-model="viewTaskByUsers.updateEndDate
+                      "min-date="mindate" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label>
+                        Assigned By
+                      </label>
+                      <input type="text" ng-model="viewTaskByUsers.userName" readonly>
+                    </div>
+                    <div class="form-group">
+                      <label>
+                        Remarks
+                      </label>
+                      <input name="remark" type="text" placeholder="comments" ng-maxlength="250" ng-model="viewTaskByUsers.userRemarks"ng-show="viewTaskByUsers.taskStatus === 'Completed' || viewTaskByUsers.taskStatus === 'Rejected' " readonly>
+                      <input name="remark" type="text" placeholder="comments" ng-maxlength="250" ng-model="viewTaskByUsers.userRemarks" ng-show="viewTaskByUsers.taskStatus != 'Completed' && viewTaskByUsers.taskStatus != 'Rejected'" >
+                      <!-- <div ng-show="assignedtoyouform.$submitted || assignedtoyouform.remark.$touched">
+                        <div ng-show="assignedtoyouform.remark.$error.required" style="color:red;">Please enter Remark
+                        </div>
+                    </div> -->
+                      <!-- <span ng-show="assignedtoyouform.remark.$error.maxlength" style="color:red">Remark is too long</span> -->
+                    </div>
+                    <div class="form-group">
+                      <label>
+                        Status
+                      </label>
+                      <!-- <select name="taskStatus" ng-model="assignedTask.taskStatusId"> -->
+                         <!-- <option value="">Please select task status</option>
+                        <option ng-repeat="status in statusAll" value="{{status.taskStatusId}}" >{{status.taskStatus}}</option>
+                      </select>
+                      
+                      <select type="text" class="form-control" ng-repeat="status.taskStatus for status in statusAll track by status.taskStatusId"
+                      ng-selected="viewTaskByUsers.taskStatusId==status.taskStatusId" name="taskStatus" ng-model="viewTaskByUsers.taskStatus" required> </select> -->
+                      <input type="text" ng-model="viewTaskByUsers.taskStatus"  custom-focus class="text-box" ng-show="viewTaskByUsers.taskStatus === 'Completed' || viewTaskByUsers.taskStatus === 'Rejected' " readonly>
+                      <!-- <select ng-model="viewTaskByUsers.taskStatus" ng-show="viewTaskByUsers.taskStatus=== 'Completed' || viewTaskByUsers.taskStatus === 'Rejected'" >                        
+                        <option ng-repeat="status in statusAll" value={{status.taskStatusId}} ng-selected="viewTaskByUsers.taskStatus==status.taskStatus" ng-disabled="true" ng-disabled="statusAll.selectable">{{status.taskStatus}}
+                        </option>
+                    </select> -->
+                    <select ng-model="viewTaskByUsers.taskStatus" custom-focus class="text-box drop-focus" ng-show="viewTaskByUsers.taskStatus != 'Completed' && viewTaskByUsers.taskStatus != 'Rejected' " >                        
+                        <option ng-repeat="status in statusAll" value={{status.taskStatusId}} ng-selected="viewTaskByUsers.taskStatus==status.taskStatus">{{status.taskStatus}}
+                        </option>
+                    </select>
+                    </div>
+                    <div class="form-group text-center">
+                      <button type="button" class="btn sharebtn"  ng-disabled="assignedtoyouform.$pristine|| assignedtoyouform.$invalid || isDisabled" ng-click="updateStatusWithRemarkToUsers(viewTaskByUsers)">Submit</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+</section>

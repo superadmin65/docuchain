@@ -1,0 +1,10 @@
+com\ipfs\app\service\impl\FileServiceImpl.class
+com\ipfs\app\dto\FileObjectDTO.class
+com\ipfs\app\service\FileService.class
+com\ipfs\app\dto\StatusResponseDTO.class
+com\ipfs\app\App.class
+com\ipfs\app\solidity\SimpleStorage$1.class
+com\ipfs\app\validations\FileValidation.class
+com\ipfs\app\controller\CommonController.class
+com\ipfs\app\objectconversion\FileObjectConversion.class
+com\ipfs\app\solidity\SimpleStorage.class

@@ -1,0 +1,95 @@
+<div class="app-content">
+    <div class="docuchainContent">
+        <div class="docuchain-admin-title">
+            <h1>Subscription Based Statistics</h1>
+        </div>
+        <div class="docuchain-admin-table">
+            <div class="docuchainTable">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="datatableEntry">
+                            <label>Show
+                                <input type="text" ng-model="itemsPerPage">of
+                                <span>{{organizationdetaillist.length}}</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="docuchainSearchbox">
+                            <div class="searchInput">
+                                <input type="text" placeholder="Search" ng-model="search">
+                                <button type="button" class="searchIcon">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-sm-12 col-xs-12">
+
+
+                        <div class="docuadmin-table">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="4" class="text-center" ng-click="orderByField='companyName'; reverseSort = !reverseSort">Company<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                        <th rowspan="3" ng-click="orderByField='registrationNumber'; reverseSort = !reverseSort">Register No<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                        <th rowspan="2" ng-click="orderByField='adminCount'; reverseSort = !reverseSort">No. of Administrators<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+
+                                        <th colspan="2" class="text-center">Subcription</th>
+                                        <th rowspan="2" class="text-center" ng-click="orderByField='remaingDayOfSubscription'; reverseSort = !reverseSort">Days Remaining<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center" ng-click="orderByField='numberOfUser'; reverseSort = !reverseSort">No. of Users<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                        <th class="text-center" ng-click="orderByField='numberOfVessels'; reverseSort = !reverseSort">No. of Vessels<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dir-paginate="list in fData = (organizationdetaillist|orderBy:'companyName'|filter:search) |itemsPerPage:itemsPerPage | orderBy:orderByField:reverseSort"
+                                        current-page="currentPage">
+                                        <td class="text-center">
+                                            {{list.companyName}}
+                                        </td>
+                                        <td>{{list.registrationNumber}}</td>
+                                        <td class="text-center">{{list.adminCount}}</td>
+                                        <td class="text-center">{{list.subscriptionDTO.numberOfUser}}</td>
+                                        <td class="text-center">{{list.subscriptionDTO.numberOfVessels}}</td>
+                                        <td class="text-center">{{list.subscriptionDTO.remaingDayOfSubscription}}</td>
+                                    </tr>
+                                    <tr ng-show="fData.length == 0">
+                                        <td colspan="9" style="padding: 10px 5px;color: black;text-align: center; font-size: 14px;">No records found</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <ul class="pagination pull-right">
+                            <dir-pagination-controls direction-links="true" boundary-links="true" ng-show="organizationdetaillist.length != 0">
+                            </dir-pagination-controls>
+                        </ul>
+                        <div class="clearfix"></div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+
+    </div>
+    <div class="preloader" ng-show="loader">
+        <div id="cssload-loader">
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+        </div>
+    </div>
+</div>

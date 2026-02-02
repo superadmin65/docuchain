@@ -1,0 +1,95 @@
+<div class="app-content">
+        <div class="userUserExtension">
+                <div class="docubodyTitle">
+                        <ul id="breadcrumb">
+                            <li>
+                                <a href="javascript:void(0);" class="icon icon-beaker">User Extension</a>
+                            </li>
+                
+                        </ul>
+                    </div>
+    <div class="docuchainContent">       
+            <h1 class="icon icon-beaker">User Extension</h1>
+            <div class="extension">
+                <form name="addRequestUserForm">
+                    <div class="form-group">
+                        <label>Vessel Name</label>
+                        <div class="extensionform">
+                            <select custom-focus class="text-box" ng-options="ship.id as ship.shipName for ship in shipList | orderBy:'shipName' track by ship.id" ng-model="requestUser.selectedShip" required>
+                                <option value="">Select Vessel</option>
+                            </select>
+                            <!-- <ui-select ng-model="requestUser.selectedShip" theme="bootstrap">
+                                    <ui-select-match placeholder="Select Vessel...">{{requestUser.selectedShip.shipName}}</ui-select-match>
+                                    <ui-select-choices repeat="ship in shipList | filter: $select.search">
+                                        <div ng-bind-html="ship.shipName | highlight: $select.search"></div>
+                                      <span>IMO:ship.imo</span> 
+                                        <small >IMO:{{ship.imo}}</small>
+                                    </ui-select-choices>
+                                </ui-select> -->
+
+                                
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Number of Users</label>
+                        <div class="extensionform no-of-users">
+                            <!-- <select custom-focus class="text-box" ng-model="requestUser.noOfUser" ng-init="requestUser.noOfUser='2'" required>
+                                <option value="1" >1</option>
+                                <option value="2">2</option>
+                            </select> -->
+                            <input type="number" custom-focus class="text-box" ng-model="requestUser.noOfUser" min="1" max="2" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Select User</label>
+                        <div class="extensionform">
+                        <ui-select multiple custom-focus class="text-box" ng-model="requestUser.selectedUsers" theme="bootstrap" close-on-select="true" title="Choose a person" remove-selected="false" required>
+                            <ui-select-match placeholder="Select members...">{{$item.firstName}} {{$item.lastName }}</ui-select-match>
+                            <ui-select-choices repeat="user in userList | filter: $select.search | orderBy:'firstName'">
+                                <!-- <div ng-bind="user.userName"></div> -->
+                                <div ng-bind-html="user.firstName | highlight: $select.search"></div>
+                                <div ng-bind-html="user.lastName | highlight: $select.search"></div>
+                                <small>
+                                        Email: {{user.mail}}
+                                    </small>
+                            </ui-select-choices>
+                        </ui-select>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label>Role</label>
+                        <div class="extensionform">
+                            <select>
+                                <option selected="">Select Role</option>
+                                <option value="Popeda">Container Ship</option>
+                            </select>
+                        </div>
+                    </div> -->
+                    <div class="form-group"> 
+                        <label>Remarks</label>
+                        <div class="extensionform1">
+                        <textarea custom-focus class="text-box" ng-model="requestUser.remark" maxlength="100" required></textarea>
+                    </div>
+                    </div>
+                    
+                </form>
+            </div>
+            <div class="extensionbtngroup">
+                <button type="button" class="btngeo clearbtn1" ng-click="clearForm()">CLEAR</button>
+                <button type="button" class="btngeo btnsubmit" ng-click="createRequestUser(requestUser)" ng-disabled="addRequestUserForm.$invalid">SUBMIT</button>
+            </div>
+        </div>
+    </div>
+    <div class="preloader" ng-show="loader">
+        <div id="cssload-loader">
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+        </div>
+    </div>
+</div>

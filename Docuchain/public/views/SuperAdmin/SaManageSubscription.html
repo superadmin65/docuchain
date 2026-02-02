@@ -1,0 +1,236 @@
+<div class="app-content" ng-app="dapp" ng-controller="SaManageSubscriptionController" ng-init="subscriptionList()">
+    <div class="docubodyTitle">
+        <ul id="breadcrumb">
+            <li>
+                <a href="javascript:void(0);">
+                    <span class="icon icon-beaker"> </span>Manage Subscription</a>
+            </li>
+        </ul>
+    </div>
+    <div class="docuContent">
+        <div class="manageOrganization vesslesDocumentsTable">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="datatableEntry">
+                        <label>Show
+                            <input type="text" ng-model="itemsPerPage">of
+                            <span>{{allSubscriptionList.length}}</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="docuchainSearchbox">
+                        <div class="searchInput">
+                            <input type="text" placeholder="Search" ng-model="subscriptionsearch">
+                            <button type="button" class="searchIcon">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 col-xs-12">
+                    <div class="docuchainmanageOrganization">
+                        <div class="manageOrganizationTable table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th ng-click="orderByField='organizationName'; reverseSort = !reverseSort">Company<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                        <th ng-click="orderByField='registerNumber'; reverseSort = !reverseSort">Registration No<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                        <th ng-click="orderByField='shipmentCount'; reverseSort = !reverseSort">No. of Vessels<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                        <th ng-click="orderByField='userCount'; reverseSort = !reverseSort">No. of User<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                        <th ng-click="orderByField='activationDate'; reverseSort = !reverseSort">Start Date<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                        <th ng-click="orderByField='expireDate'; reverseSort = !reverseSort">End Date<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                        <th >Administrators</th>
+                                        <th>Status</th>
+                                        <th class="text-center manageactionwidth">Active</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dir-paginate="subscription in allSubscriptionList  | orderBy:'organizationName' |filter:subscriptionsearch |itemsPerPage:itemsPerPage | orderBy:orderByField:reverseSort" current-page="currentPage">
+
+                                        <td>{{subscription.organizationName}}</td>
+                                        <td>{{subscription.registerNumber}}</td>
+                                        <td>{{subscription.shipmentCount}}</td>
+                                        <td>{{subscription.userCount}}</td>
+                                        <td>{{subscription.activationDate}}</td>
+                                        <td>{{subscription.expireDate}}</td>
+                                        <td class="text-center">
+                                            <a data-toggle="modal" data-backdrop="static" ng-click="mangeAdminSubscription(subscription)">
+                                                <img src="image/manageadminIcon.png">
+                                            </a>
+                                        </td>
+                                        <td class="textblue">{{subscription.status}}</td>
+                                        <td class="text-center">
+                                            <button type="button" class="btned editBtn" data-toggle="modal" data-target="#subscriptview" data-backdrop="static" ng-click="viewSubscrition(subscription)">
+                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btned editBtn" data-toggle="modal" data-target="#subscriptedit" data-backdrop="static" ng-click="editSubscrition(subscription)">
+                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true">
+                        </dir-pagination-controls>
+                        <div class="vesselstablebottom" ng-if="allSubscriptionList.length == 0">No Records Found.</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Super Admin Create New Edit -->
+    <div class="subscriptionPopup">
+        <div class="modal fade" id="subscriptview" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Manage Subscription View</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="subscriptbody">
+                            <div class="form">
+                                <div class="form-group">
+                                    <label>Company Name<span style="color:red">*</span></label>
+                                    <input type="text" placeholder="Company Name" ng-model="viewsub.organizationName" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label>Registration Number<span style="color:red">*</span></label>
+                                    <input type="text" placeholder="Registration Number" ng-model="viewsub.registerNumber" readonly>
+
+                                </div>
+                                <div class="form-group">
+                                    <label>Number of Vessel<span style="color:red">*</span></label>
+                                    <input type="text" placeholder="Number of Vessel" ng-model="viewsub.shipmentCount" readonly>
+                                </div>
+                                <!-- <div class="form-group">
+                                    <label>Number of User</label>
+                                    <input type="text" placeholder="Email Id" ng-model="viewsub.userCount" readonly>
+                                </div> -->
+                                <div class="form-group">
+                                    <label>Expected user per Vessel / User Vessel Role<span style="color:red">*</span>
+                                    </label>
+                                    <input type="text" placeholder="Number of Users / License" name="userVesslesRatio" ng-model="viewsub.userVesslesRatio" ng-pattern="/^[0-9]*$/"
+                                        readonly>
+                                    <span ng-show="updateSubForm.userVesslesRatio.$error.pattern" style="color:red">Please enter numbers only</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>
+                                        Start Date<span style="color:red">*</span>
+                                    </label>
+                                    <input class="form-control" custom-focus class="text-box" ng-model="viewsub.fromDate" readonly>
+
+                                </div>
+                                <div class="form-group ">
+                                    <label>
+                                        End Date<span style="color:red">*</span>
+                                    </label>
+                                    <input class="form-control" custom-focus class="text-box" ng-model="viewsub.toDate" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer1">
+                            <!-- <button type="button" class="btngeo clearbtn">Clear</button> -->
+                            <button type="button" class="btngeo submitbtn clr448aff" ng-click="close()">CLOSE</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="preloader" ng-show="loader">
+            <div id="cssload-loader">
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Super Admin Create New Edit -->
+    <div class="subscriptionPopup">
+        <div class="modal fade" id="subscriptedit" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Manage Subscription Update</h4>
+                        <button type="button" class="close" data-dismiss="modal" ng-click="close()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form name="updateSubForm" ng-submit="editSubscription()">
+                            <div class="subscriptbody">
+                                <div class="form">
+                                    <div class="form-group">
+                                        <label>Company Name <span  style="color:red">*</span></label>
+                                        <input type="text" placeholder="Company Name" ng-model="editSub.organizationName" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Registration Number <span  style="color:red">*</span></label>
+                                        <input type="text" placeholder="Registration Number" ng-model="editSub.registerNumber" readonly>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Number of Vessel   <span  style="color:red">*</span></label>
+                                        <input type="text" placeholder="Number of Vessel" name="NoOfvessels" ng-pattern="/^[0-9]*$/" ng-model="editSub.shipmentCount"
+                                            required>
+                                        <span ng-show="updateSubForm.NoOfvessels.$error.pattern" style="color:red">Please enter numbers only</span>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Expected user per Vessel / User Vessel Role  <span  style="color:red">*</span></label>
+                                        </label>
+                                        <input type="text" placeholder="Number of Users / License" name="userVesslesRatio" ng-model="editSub.userVesslesRatio" ng-pattern="/^[0-9]*$/"
+                                            required>
+                                        <span ng-show="updateSubForm.userVesslesRatio.$error.pattern" style="color:red">Please enter numbers only</span>
+                                    </div>
+                                    <div class="form-group datepickerplace">
+                                        <label>
+                                            Start Date   <span  style="color:red">*</span></label>
+                                        </label>
+                                        <div class="datepickerinput">
+                                            <input custom-focus class="text-box"  placeholder="{{editSub.fromDate}}" moment-picker="ctrl.fromDate"
+                                                locale="en" format="DD-MM-YYYY" ng-model="editSub.fromDate" ng-model-options="{ updateOn: 'blur' }">
+                                        </div>
+                                    </div>
+                                    <div class="form-group datepickerplace">
+                                        <label>
+                                            End Date  <span  style="color:red">*</span></label>
+                                        </label>
+                                        <div class="datepickerinput">
+                                            <input  custom-focus class="text-box" placeholder="{{editSub.toDate}}"  moment-picker="ctrl.toDate" locale="en"
+                                                format="DD-MM-YYYY" ng-model="editSub.toDate" ng-model-options="{ updateOn: 'blur' }">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer1">
+                                    <button type="button" class="btngeo clearbtn" ng-click="cancelSubEdit()">CANCEL</button>
+                                    <button type="submit" class="btngeo submitbtn clr448aff" ng-disabled="updateSubForm.$invalid">SUBMIT</button>
+                                </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="preloader" ng-show="loader">
+                <div id="cssload-loader">
+                    <div class="cssload-dot"></div>
+                    <div class="cssload-dot"></div>
+                    <div class="cssload-dot"></div>
+                    <div class="cssload-dot"></div>
+                    <div class="cssload-dot"></div>
+                    <div class="cssload-dot"></div>
+                    <div class="cssload-dot"></div>
+                    <div class="cssload-dot"></div>
+                </div>
+            </div>
+        </div>

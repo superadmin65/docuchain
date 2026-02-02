@@ -1,0 +1,123 @@
+@media only screen and (min-width: 1200px) and (max-width:1300px) {
+    .docuvessellist{width: auto;}
+    .docuchain-count-list ul li{padding: 0 15px 0 0;}
+    .docuchain-count-list ul {padding: 0 30px;}
+}
+@media only screen and (min-width: 960px) and (max-width: 1199px) {
+    .docuvessellist{width: auto;}
+    .docuchain-count-list ul li{padding: 0 18px 0 0;}
+    .docuchain-count-list ul {padding: 0 18px;}
+    .shipimage{display: none;}
+}
+ @media only screen and (min-width: 768px) and (max-width: 959px) {
+     /* Login */
+    .docu-logo img{width: 70%;}
+    .docu-form{ padding: 6px 15px;}
+    .docuchain-count-list{position: absolute; top: 0;  z-index: 1; margin: 2em auto; padding: 8px 12px; background: #ffffff; display: none; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12); -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12); -moz-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12); margin: 82px auto; }
+    .docuchain-count-list ul{padding: 8px 12px;}
+    .toggleoption{display: block;}
+    .docuchain-count-list ul li{display: inline-block;}
+    .docuchain-count-list ul li a{display: block;}
+    .countList{display: inherit;}
+    /* Admin */
+    .docuvessellist{width: auto;}
+    .VesselTableData table tbody tr td{white-space: nowrap;}
+    .docuadmin-table{ overflow-x: auto;}
+    .docuuserdoculist .tab .nav-tabs li a{padding: 14px 20px;}
+    .flex{display:inherit;}
+    .resetoldnew{width: 100%;}
+}
+ @media only screen and (min-width: 480px) and (max-width: 767px) {
+     /* Login */
+    .docu-login-logo{position: static; width: 100%;}
+    .docu-logo img{width: 70%;}
+    .docu-form{ padding: 6px 15px;}
+    .docu-group-logo{position: absolute; width: 100%;  display: none;}
+    /* Admin */
+    .docuchain-count-list{position: absolute; top: 0; margin: 2em auto; padding: 8px 12px; background: #ffffff; display: none; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12); -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12); -moz-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12); margin: 82px auto; width: 410px;}
+    .docuchain-count-list ul{padding: 8px 12px;}
+    .toggleoption{display: block;}
+    .docuchain-count-list ul li{display: inline-block;}
+    .docuchain-count-list ul li a{display: block;}
+    .shipimage{display: none;}
+    .docuvessellist{width: auto;}
+    .VesselTableData table thead tr th{white-space: nowrap;}
+    .VesselTableData table tbody tr td{white-space: nowrap;}
+    .docuadmin-table{ overflow-x: auto;}
+    .manageOrganizationTable table tbody tr td{white-space: nowrap;}
+    .tasksManagement .tab .nav-tabs li a{padding: 14px 10px;}
+    .docuContent{padding: 6px;}
+    .taskMangeTable table thead tr th{white-space: nowrap;}
+    .taskMangeTable table tbody tr td{white-space: nowrap;}
+    .docuuserdoculist .tab .nav-tabs li a{padding: 14px 30px;}
+    .flex{display:inherit;}
+    .resetoldnew{width: 100%;}
+}
+@media only screen and (max-width:479px){
+    /* Login */
+    .docu-login-logo{ width: 100%;}
+    .docu-logo img{width: 70%;}
+    .docu-form{width:100%; padding: 6px 15px;}
+    .docu-group-logo{position: absolute; width: 100%; display: none;}
+    #breadcrumb li a{font-size: 14px;}
+    /* Admin */
+    .docuchain-sidebar-toggle{padding: 15px 15px; background: #ffffff;}
+    .docuchain-header-logo img{width: 80px;}
+    /* .docuchain-count-list ul{display: none;} */
+    .docuchain-count-list{position: absolute; top: 0; right: 0; background: #ffffff; margin-top: 70px; display: none; box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12); -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12); -moz-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);}
+    .docuchain-count-list ul{padding: 8px 12px;}
+    .toggleoption{display: block;}
+    .docuchain-count-list ul li{display: block;}
+    .docuchain-count-list ul li a{display: block; padding-bottom: 56px;}
+    /* .countList{display: inherit;} */
+    .docuchainContent{padding: 20px 0;}
+    .docuadmin-table{position: relative; z-index: 10;}
+    .docuchain-header-logo{padding: 0 4px;}
+    .docuchainTable{margin-top: 6px; padding: 10px;}
+    .docuchain-admin-title h1{font-size: 15px;}
+    .pagination > li > a{font-size: 12px;}
+    .vesselMap{padding: 12px;}
+    iframe{height: 250px;}
+    .doculogo{display: none;}
+    .docubodyTitle{padding: 20px 4px;}
+    #breadcrumb{margin-bottom: 6px;}
+    .docuContent{padding: 0px; margin-top: 12px;}
+    .datatableEntry label{margin-bottom: 10px;}
+    .app-notification{min-width: 100%;}
+    .multistep-form-section ul li a{font-size: 15px; margin: 0 10px; padding: 10px 12px;}
+    .VesselTableData table thead tr th{white-space: nowrap;}
+    .VesselTableData table tbody tr td{white-space: nowrap;}
+    .btned{margin-right: 3px;}
+    .docuVesselsBtn .btnVessel, .docuVesselsBtn .btnVessel:hover, .docuVesselsBtn .btnVessel:focus{margin-bottom: 6px;}
+    .datepick .btn-group > .btn-group{width: 100%; margin-bottom: 6px;}
+    .btn-group, .btn-group-vertical{display: block;}
+    .tableUsers table tbody tr td{white-space: nowrap;}
+    .tableUsers{ overflow-x: auto;}
+    .docuadmin-table{ overflow-x: auto;}
+    .userExtensionstabs .tab .nav-tabs li{width: auto;}
+    .userExtensionstabs .tab .nav-tabs li a{font-size: 14px; padding: 10px 12px;}
+    .userExtensionstabs .tab .nav-tabs li.active a:after{left: 38%; border-width: 9px; bottom: -8px;}
+    .tasksManagement .tab .nav-tabs li a{font-size: 16px; padding: 10px 12px; margin-bottom: 14px; }
+    .tasksManagement .tab .nav-tabs li a:hover{border: 1px solid #dddddd;}
+    .filterbox{margin-bottom: 12px;}
+    .vesslesDocumentsTable{padding: 12px;}
+    .docuvessellist{width: auto;}
+    .docuuserdoculist .tab .nav-tabs li a{margin-bottom: 12px; font-size: 15px; border:1px solid #dddddd;}
+    .docuuserdoculist .tab .nav-tabs li a:hover{border:1px solid #dddddd;}
+    .addNewUserSect .addNew-Userbody{padding: 0 12px;}
+    .userUploadBrowse{width: 100%;}
+    .manageOrganizationTable table tbody tr td{white-space: nowrap;}
+    .taskMangeTable table thead tr th{white-space: nowrap;}
+    .taskMangeTable table tbody tr td{white-space: nowrap;}
+    .profiletabs .tab .nav-tabs li a{padding: 8px 12px; font-size: 16px;}
+    .profile-edit-box{margin-top: 12px;}
+    .mobilepadd{padding: 0;}
+    .flex{display:inherit;}
+    .resetoldnew{width: 100%;}
+}
+@media only screen and (max-width: 319px) { 
+}
+@media only screen and (min-width: 960px) and (max-width:1920px){
+
+.docuchain-count-list{display:block !important;}
+}

@@ -1,0 +1,554 @@
+<div class="app-content">
+  <div class="docubodyTitle">
+    <ul id="breadcrumb">
+      <li>
+        <a ui-sref="dapp.adminVessels" class="icon icon-beaker">Vessels </a>
+      </li>
+    </ul>
+    <div class="bttnGroup">
+      <button
+        type="button"
+        id="addVesselid"
+        ng-click="checkVessellimit()"
+        class="addNew"
+      >
+        <img src="image/addNewshipIcon.png " />Add New Vessel
+      </button>
+    </div>
+  </div>
+
+  <div class="docuContent">
+    <div class="vesslesDocumentsTable">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="datatableEntry">
+            <label
+              >Show <input type="text" ng-model="itemsPerPage" />of
+              <span>{{vesselsList.length}}</span>
+            </label>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="docuchainSearchbox">
+            <div class="searchInput">
+              <input type="text" ng-model="search" placeholder="Search" />
+              <button type="button" class="searchIcon">
+                <i class="fa fa-search" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12 col-xs-12">
+          <div class="vesselsTables">
+            <div class="VesselTableData table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th class="text-center addwidth50">
+                      <div class="clearcheckbox">
+                        <label class="control control--checkbox">
+                          <input
+                            type="checkbox"
+                            ng-model="checkall"
+                            ng-click="checkAll(vesselsList)"
+                          />
+                          <div class="control__indicator"></div>
+                        </label>
+                      </div>
+                    </th>
+                    <th class="text-center">Vessel</th>
+                    <th>
+                      Vessel Name<i
+                        class="fa fa-sort float-right"
+                        aria-hidden="true"
+                        ng-click="orderByField='shipName'; reverseSort = !reverseSort"
+                      ></i>
+                    </th>
+                    <!-- <th ng-click="orderByField='shipName'; reverseSort = !reverseSort">Vessel Name</th> -->
+                    <th>
+                      IMO Number<i
+                        class="fa fa-sort float-right"
+                        aria-hidden="true"
+                        ng-click="orderByField='imo'; reverseSort = !reverseSort"
+                      ></i>
+                    </th>
+                    <th>
+                      Ship Master<i
+                        class="fa fa-sort float-right"
+                        aria-hidden="true"
+                        ng-click="orderByField='shiMasterInfo.firstName'; reverseSort = !reverseSort"
+                      ></i>
+                    </th>
+                    <th>
+                      Technical Managers<i
+                        class="fa fa-sort float-right"
+                        aria-hidden="true"
+                        ng-click="orderByField='tech.firstName'; reverseSort = !reverseSort"
+                      ></i>
+                    </th>
+                    <th>
+                      Commercial Managers<i
+                        class="fa fa-sort float-right"
+                        aria-hidden="true"
+                        ng-click="orderByField='commercial.firstName'; reverseSort = !reverseSort"
+                      ></i>
+                    </th>
+
+                    <th class="text-center">Status</th>
+                    <th class="text-center resizewidth">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    dir-paginate="vessels in fData=(vesselsList|filter:search) |itemsPerPage:itemsPerPage | orderBy:orderByField:reverseSort"
+                    current-page="currentPage"
+                  >
+                    <td class="text-center">
+                      <div class="clearcheckbox">
+                        <label class="control control--checkbox">
+                          <input
+                            type="checkbox"
+                            value="{{ vessels.id }}"
+                            ng-model="vessels.checked"
+                            ng-change="updateCheckall()"
+                          />
+                          <div class="control__indicator"></div>
+                        </label>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      <div class="vesslprofile">
+                        <img
+                          ng-if="!vessels.shipProfilePicPath"
+                          ng-src="image/imageUpload.png"
+                        />
+                        <img
+                          ng-if="vessels.shipProfilePicPath"
+                          ng-src="{{vessels.shipProfilePicPath}}"
+                        />
+                      </div>
+                    </td>
+                    <td>{{vessels.shipName}}</td>
+                    <td>{{vessels.imo}}</td>
+                    <td class="listtechnical">
+                      <ul>
+                        <li>
+                          <a
+                            ng-if="vessels.shiMasterInfo.firstName && vessels.shiMasterInfo.lastName"
+                            >{{vessels.shiMasterInfo.firstName}}
+                            {{vessels.shiMasterInfo.lastName}}</a
+                          >
+                          <button
+                            type="button"
+                            data-toggle="modal"
+                            data-target="#removeShip"
+                            ng-click="removeShipMaster(vessels.shiMasterInfo.userId, vessels.id)"
+                            class="Listclose"
+                          >
+                            <i
+                              class="fa fa-times-circle"
+                              aria-hidden="true"
+                            ></i>
+                          </button>
+                        </li>
+                      </ul>
+                    </td>
+                    <td class="listtechnical">
+                      <ul>
+                        <li
+                          ng-repeat="tech in vessels.techManagerInfoList | limitTo : 2"
+                        >
+                          <a>{{tech.firstName}}&nbsp;{{tech.lastName}}</a>
+                          <button
+                            type="button"
+                            data-toggle="modal"
+                            data-target="#remove"
+                            ng-click="selectedTech(tech.userId, vessels.id)"
+                            class="Listclose"
+                          >
+                            <i
+                              class="fa fa-times-circle"
+                              aria-hidden="true"
+                            ></i>
+                          </button>
+                        </li>
+                        <li>
+                          <a
+                            href="javascript:void(0);"
+                            ng-if="vessels.techManagerInfoList.length > '2'"
+                            data-toggle="modal"
+                            data-target="#techList"
+                            ng-click="techClick(vessels.techManagerInfoList, vessels.id)"
+                            data-backdrop="static"
+                          >
+                            +{{vessels.techManagerInfoList.length-2}} Users
+                          </a>
+                        </li>
+                      </ul>
+                    </td>
+                    <td class="listtechnical">
+                      <ul>
+                        <li
+                          ng-repeat="commercial in vessels.commercialManagerInfoList | limitTo : 2"
+                        >
+                          <a
+                            >{{commercial.firstName}}&nbsp;{{commercial.lastName}}</a
+                          >
+                          <button
+                            type="button"
+                            ng-click="selectedCom(commercial.userId, vessels.id)"
+                            data-toggle="modal"
+                            data-target="#removecom"
+                            class="Listclose"
+                          >
+                            <i
+                              class="fa fa-times-circle"
+                              aria-hidden="true"
+                            ></i>
+                          </button>
+                        </li>
+                        <li>
+                          <a
+                            href="javascript:void(0);"
+                            ng-if="vessels.commercialManagerInfoList.length > '2'"
+                            data-toggle="modal"
+                            ng-click="comClick(vessels.commercialManagerInfoList, vessels.id)"
+                            data-target="#commercialList"
+                            data-backdrop="static"
+                          >
+                            +{{vessels.commercialManagerInfoList.length-2}}
+                            Users
+                          </a>
+                        </li>
+                      </ul>
+                    </td>
+                    <td>
+                      <div class="onoffswitch">
+                        <input
+                          type="checkbox"
+                          name="onoffswitch"
+                          ng-click="singleToggle(vessels)"
+                          ng-model="checkStatus"
+                          class="onoffswitch-checkbox"
+                          ng-checked="{{vessels.status}}"
+                          id="myonoffswitch{{$index}}"
+                        />
+                        <label
+                          class="onoffswitch-label"
+                          for="myonoffswitch{{$index}}"
+                        >
+                          <span class="onoffswitch-inner"></span>
+                          <span class="onoffswitch-switch"></span>
+                        </label>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      <button
+                        type="button"
+                        ng-click="adminvesselsEdit(vessels.id, vessels.countryName, vessels.stateName)"
+                        class="btned editBtn"
+                      >
+                        <i
+                          class="fa fa-eye"
+                          ui-sref="dapp.adminvesselsView"
+                          aria-hidden="true"
+                        ></i>
+                      </button>
+                      <button
+                        type="button"
+                        ng-click="adminvesselsEdit(vessels.id, vessels.countryName, vessels.stateName,vessels.customDocumentHolders)"
+                        class="btned editBtn"
+                      >
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                      </button>
+                      <button
+                        type="button"
+                        class="btned deleteBtn"
+                        ng-click="openDelete(vessels.id)"
+                        data-toggle="modal"
+                        data-target="#delete"
+                        data-backdrop="static"
+                      >
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr ng-show="fData.length == 0">
+                    <td style="padding: 20px; text-align: center" colspan="10">
+                      No Records Found
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- <div style="padding:20px;text-align: center;" ng-if="vesselsList.length == 0">No Records Found</div> -->
+
+            <div class="vesselstablebottom" ng-if="vesselsList.length > 0">
+              <div class="docuVesselsBtn pull-left">
+                <button
+                  type="button"
+                  ng-disabled="shipIds.length == 0"
+                  ng-click="activeAll()"
+                  class="btnVessel activeAll"
+                >
+                  Active All
+                </button>
+                <button
+                  type="button"
+                  ng-disabled="shipIds.length == 0"
+                  ng-click="deactiveAll()"
+                  class="btnVessel inActiveAll"
+                >
+                  InActive All
+                </button>
+                <button
+                  type="button"
+                  ng-disabled="shipIds.length == 0"
+                  ng-click="deleteAll()"
+                  class="btnVessel deleteAll"
+                >
+                  Delete All
+                </button>
+              </div>
+
+              <div class="pull-right">
+                <dir-pagination-controls
+                  max-size="5"
+                  direction-links="true"
+                  boundary-links="true"
+                >
+                </dir-pagination-controls>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="preloader" ng-show="loader">
+    <div id="cssload-loader">
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Popup -->
+<div class="deleteMessage">
+  <div class="modal fade" id="delete" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Vessel Delete</h4>
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="delete-group-body">
+            <p>
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Are
+              you sure you want to delete the vessel?
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            ng-click="yesDelete()"
+            data-dismiss="modal"
+            class="btnd buttn-delete"
+          >
+            Yes
+          </button>
+          <button type="button" class="btnd buttn-no" data-dismiss="modal">
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Remove Popup -->
+<div class="deleteMessage">
+  <div class="modal fade" id="remove" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">User Delete</h4>
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="delete-group-body">
+            <p>
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Are
+              you sure you want to remove the user?
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            ng-click="yesRemove()"
+            data-dismiss="modal"
+            class="btnd buttn-delete"
+          >
+            Yes
+          </button>
+          <button type="button" class="btnd buttn-no" data-dismiss="modal">
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Remove Ship Popup -->
+<div class="deleteMessage">
+  <div class="modal fade" id="removeShip" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">User Delete</h4>
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="delete-group-body">
+            <p>
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Are
+              you sure you want to remove the user?
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            ng-click="yesRemoveShip()"
+            data-dismiss="modal"
+            class="btnd buttn-delete"
+          >
+            Yes
+          </button>
+          <button type="button" class="btnd buttn-no" data-dismiss="modal">
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Remove Ship Popup -->
+<div class="deleteMessage">
+  <div class="modal fade" id="removecom" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">User Delete</h4>
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="delete-group-body">
+            <p>
+              <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Are
+              you sure you want to remove the user?
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            ng-click="yesRemovecom()"
+            data-dismiss="modal"
+            class="btnd buttn-delete"
+          >
+            Yes
+          </button>
+          <button type="button" class="btnd buttn-no" data-dismiss="modal">
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Vessel Commercial Users List -->
+<div class="commercialUsers">
+  <div class="modal fade" id="commercialList" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">View More Users</h4>
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="commerciallistbody">
+            <ul>
+              <li ng-repeat="com in listCom">
+                <a href="javascript:void(0);"
+                  >{{com.firstName}} {{com.lastName}}</a
+                >
+                <button
+                  type="button"
+                  ng-click="selectedComMore(com.userId)"
+                  class="Listclose"
+                >
+                  <i class="fa fa-times-circle" aria-hidden="true"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="commercialUsers">
+  <div class="modal fade" id="techList" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">View More Users</h4>
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="commerciallistbody">
+            <ul>
+              <li ng-repeat="tech in listTech">
+                <a href="javascript:void(0);"
+                  >{{tech.firstName}} {{tech.lastName}}</a
+                >
+                <button
+                  type="button"
+                  ng-click="selectedTechMore(tech.userId)"
+                  class="Listclose"
+                >
+                  <i class="fa fa-times-circle" aria-hidden="true"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

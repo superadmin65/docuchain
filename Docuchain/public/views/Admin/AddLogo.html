@@ -1,0 +1,90 @@
+<div class="app-content">
+    <div class="docubodyTitle">
+        <ul id="breadcrumb">
+            <li>
+                <a ng-click="userDetails()">
+                    <span class="icon icon-beaker"> </span> Add Logo</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="docuContent solid-profile-cards">
+        <div class="row">
+
+            <div class="col-lg-12 col-xs-12">
+                <div class="dmsbgwhite">
+                    <div class="profiletabs">
+                        <div class="profileedit">
+                            <div class="col-lg-3">
+                                <div class="profilechange">
+                                        <img ng-show=" thumbnail.dataUrls == undefined" src="image/avatarimg.jpg">
+                                    <img ng-show=" thumbnail.dataUrl != 'undefined'" ng-src="{{ thumbnail.dataUrl }}">
+                                    <input type="file" class="mobt" onchange="angular.element(this).scope().uploadFile(this.files)" name="file" file-input="files"
+                                        ng-model="sessionObject.profilePictures" alt="Admin Image" />
+                                    <span style="color:red;" id='sizeOffile' class="ptag1"></span>
+                                </div>
+                            </div>
+                            <div class="footerbtn">
+                                <div class="col-lg-12">
+                                    <div class="form-group">
+                                        <!-- <button type="button" class="btngeo clearbtn" ng-click="editCancel()">Back</button> -->
+                                        <button type="button" class="btngeo clearbtn  " ng-click="addLogoFunction()">UPDATE</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="tab" role="tabpanel">
+                       
+                        <div class="tab-content tabs">
+                            <div role="tabpanel" ng-show="editShow" class="tab-pane fade in active" id="profileedit">
+                                <div class="profileedit">
+                                    <div class="col-lg-3">
+                                        <div class="profilechange">
+                                            <img  src="image/avatarimg.jpg">
+                                            <img ng-show=" thumbnail.dataUrl != 'undefined'" ng-src="{{ thumbnail.dataUrl }}">
+                                            <input type="file" class="mobt"  onchange="angular.element(this).scope().uploadFiledp(this.files)"
+                                                name="file" file-input="files" ng-model="sessionObject.profilePictures" alt="Admin Image"
+                                            />
+                                            <span style="color:red;" id='sizeOffile' class="ptag1"></span>
+                                        </div>
+                                    </div>                                  
+                                    <div class="footerbtn">
+                                        <div class="col-lg-12">
+                                            <div class="form-group">
+                                                <button type="button" class="btngeo clearbtn" ng-click="editCancel()">Back</button>
+                                                <button type="button" class="btngeo submitbtn clr448aff" ng-click="editProfileSubmit(sessionObject)">UPDATE</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                          
+                                <div class="footerbtn text-center">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <button type="button" class="btngeo clearbtn" ng-click="editCancel()">Back</button>
+                                            <button type="button" ng-disabled="pswdForm.$invalid" class="btngeo pull-right submitbtn clr448aff" ng-click="resetPasswordSubmit(profileData)">SUBMIT</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="preloader" ng-show="loader">
+    <div id="cssload-loader">
+        <div class="cssload-dot"></div>
+        <div class="cssload-dot"></div>
+        <div class="cssload-dot"></div>
+        <div class="cssload-dot"></div>
+        <div class="cssload-dot"></div>
+        <div class="cssload-dot"></div>
+        <div class="cssload-dot"></div>
+        <div class="cssload-dot"></div>
+    </div>
+</div>
+</div>

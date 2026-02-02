@@ -1,0 +1,155 @@
+<div class="app-content" ng-app="dapp" ng-controller="SaCompanyProfileController" ng-init="organizationList()">
+    <div class="docubodyTitle">
+        <ul id="breadcrumb">
+            <li>
+                <a ui-sref="dapp.saCompanyProfile">
+                    <span class="icon icon-beaker"> </span> Manage Organization</a>
+            </li>
+        </ul>
+        <div class="bttnGroup">
+            <a ui-sref="dapp.saCompanyProfilecreate" class="addNew">
+                <img src="image/createnewIcon.png">Create Organization</a>
+        </div>
+    </div>
+    <div class="docuContent">
+        <div class="manageOrganization vesslesDocumentsTable">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="datatableEntry">
+                        <label>Show
+                            <input type="text" ng-model="itemsPerPage">of
+                            <span>{{allOrganizationList.length}}</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="docuchainSearchbox">
+                        <div class="searchInput">
+                            <input type="text" ng-model="organizationsearch">
+                            <button type="button" class="searchIcon">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 col-xs-12">
+                    <div class="docuchainmanageOrganization">
+                        <div class="manageOrganizationTable table-responsive">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th ng-click="orderByField='organizationName'; reverseSort = !reverseSort">Company <i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                        <th ng-click="orderByField='organizationName'; reverseSort = !reverseSort">Registration No<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                        <th ng-click="orderByField='contactPersonName'; reverseSort = !reverseSort">Contact<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                        <th ng-click="orderByField='emailId'; reverseSort = !reverseSort">Email <i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                        <th ng-click="orderByField='phoneNumber'; reverseSort = !reverseSort">Phone<i class="fa fa-sort float-right" aria-hidden="true"></i></th>
+                                        <th class="text-center">Document Approval</th>
+                                        <th class="text-center">Status</th>
+                                        <th class="text-center">Save in blockchain</th>
+                                        <th class="text-center manageactionwidth">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr dir-paginate="organization in allOrganizationList | orderBy:'organizationName' |filter:organizationsearch |itemsPerPage:itemsPerPage | orderBy:orderByField:reverseSort" current-page="currentPage">
+                                        <td>{{organization.organizationName}}</td>
+                                        <td>{{organization.registrationNumber}}</td>
+                                        <td>{{organization.contactPersonName}}</td>
+                                        <td>{{organization.emailId}}</td>
+                                        <td>{{organization.phoneNumber}}</td>
+                                        <td>
+                                            <div class="onoffswitch">
+                                                <input type="checkbox" name="onoffswitch1" class="onoffswitch-checkbox" ng-true-value="1" ng-false-value="0" ng-checked="{{organization.isDualApprovalActive}}"
+                                                    id="myonoffswitch1{{$index}}" ng-model='rec.test1' ng-click="changeOrgDualApprovel(organization)">
+                                                <label class="onoffswitch-label" for="myonoffswitch1{{$index}}">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="onoffswitch">
+                                                <input type="checkbox" name="onoffswitch2" class="onoffswitch-checkbox" ng-true-value="1" ng-false-value="0" ng-checked="{{organization.isStatusActive}}"
+                                                    id="myonoffswitch2{{$index}}" ng-model='rec.test2' ng-click="changeStatusOrganization(organization);">
+                                                <label class="onoffswitch-label" for="myonoffswitch2{{$index}}">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="onoffswitch">
+                                                <input type="checkbox" name="onoffswitch2" class="onoffswitch-checkbox" ng-true-value="1" ng-false-value="0" ng-checked="{{organization.isSaveInBlockchain}}"
+                                                    id="myonoffswitch3{{$index}}" ng-model='rec.test3' ng-click="changeSaveInBlockchain(organization);">
+                                                <label class="onoffswitch-label" for="myonoffswitch3{{$index}}">
+                                                    <span class="onoffswitch-inner"></span>
+                                                    <span class="onoffswitch-switch"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="text-center">
+                                            <button type="button" class="btned editBtn" data-toggle="modal"  data-backdrop="static" ng-click="viewOrganizationById(organization)">
+                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btned editBtn" data-toggle="modal"  data-backdrop="static" ng-click="getUpdateId(organization)">
+                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                            </button>
+                                            <button type="button" class="btned deleteBtn" data-toggle="modal" data-target="#delete" data-backdrop="static" ng-click="getDeleteId(organization)">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                   
+                                 
+                                  
+                                </tbody>
+                            </table>
+                        </div>
+                        <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true">
+                        </dir-pagination-controls>
+                        <div class="vesselstablebottom" ng-if="allOrganizationList.length == 0">No Records Found.</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     <!-- Delete Popup -->
+     <div class="deleteMessage">
+            <div class="modal fade" id="delete" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Organization Delete</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="delete-group-body">
+                                <p>
+                                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>Are you sure you want to delete this organization?</p>
+    
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btnd buttn-delete" ng-click="deleteOrganization()">Yes</button>
+                            <button type="button" class="btnd buttn-no" data-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="preloader" ng-show="loader">
+            <div id="cssload-loader">
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+                <div class="cssload-dot"></div>
+            </div>
+        </div>
+  </div>

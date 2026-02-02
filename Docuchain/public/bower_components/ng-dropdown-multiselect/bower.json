@@ -1,0 +1,35 @@
+{
+  "name": "ng-dropdown-multiselect",
+  "version": "1.6.12",
+  "authors": [
+    "Pedro Semeano <semeano@gmail.com>"
+  ],
+  "description": "AngularJS Dropdown Multiselect directive",
+  "keywords": [
+    "angular",
+    "angularjs",
+    "directive",
+    "dropdown",
+    "multiselect",
+    "checklist",
+    "list",
+    "bootstrap",
+    "checkbox"
+  ],
+  "license": "MIT",
+  "main": "src/ng-dropdown-multiselect.js",
+  "ignore": [
+  	"app",
+  	"dist",
+  	"test",
+    ".*",
+    "Gruntfile.js",
+    "package.json"
+  ],
+  "dependencies": {
+    "angular": "~1.x",
+    "lodash": "~2.x",
+    "jquery": "~2.x",
+    "bootstrap": "~3.x"
+  }
+}
