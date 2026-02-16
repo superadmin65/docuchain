@@ -1,0 +1,38 @@
+<div
+  class="app-content"
+  ng-app="dapp"
+  ng-controller="UserVesselDcoumentController"
+  ng-init="getAllShipList()"
+>
+  <div class="docubodyTitle">
+    <ul id="breadcrumb">
+      <li>
+        <a href="javascript:void(0);">
+          <span class="icon icon-beaker"> </span>Vessel Documents</a
+        >
+      </li>
+    </ul>
+  </div>
+  <div class="docuchainContent">
+    <div class="docuuservesseldoc">
+      <div class="row">
+        <div class="docuvessellist" ng-repeat="vessel in vesselList">
+          <a href="javascript:void(0);" ng-click="openEBDState(vessel)">
+            <div class="uservessellist">
+              <img
+                ng-if="!vessel.shipProfilePicPath"
+                src="image/shipname.png"
+              />
+              <img
+                ng-if="vessel.shipProfilePicPath"
+                src="{{vessel.shipProfilePicPath}}"
+              />
+              <h1>{{vessel.shipName}}</h1>
+              <h2>{{vessel.officialNo}}</h2>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

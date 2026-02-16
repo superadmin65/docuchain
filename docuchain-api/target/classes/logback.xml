@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<timestamp key="byDay" datePattern="yyyyMMdd"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>docuchain - %date [%thread] %-5level %logger{36} - %message%n
+            </pattern>
+        </encoder>
+    </appender>
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+      <file> log-${byDay}.txt </file>
+      <append>true</append>
+      <encoder>
+         <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>
+      </encoder>
+   </appender>
+
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.springframework.transaction" level="WARN"/>
+
+    <!-- in order to debug some marshalling issues, this needs to be TRACE -->
+    <logger name="org.springframework.web.servlet.mvc" level="ERROR"/>
+    <logger name="org.springframework.ldap.core.LdapTemplate" level="ERROR"/>
+    <logger name="org.springframework.ldap.support.LdapUtils" level="ERROR"/>
+
+    <root level="ERROR">
+    	<appender-ref ref="FILE" />
+        <appender-ref ref="STDOUT"/>
+    </root>
+    
+   <!--  <root level="ERROR">
+    	<appender-ref ref="FILE" />
+    </root>
+    
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root> -->
+</configuration>

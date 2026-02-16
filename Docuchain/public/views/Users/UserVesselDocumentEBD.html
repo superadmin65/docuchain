@@ -1,0 +1,1406 @@
+<header
+  class="docuchain-app-header"
+  ng-controller="UserHeaderController"
+  ng-init="contentHeaderLoad()"
+>
+  <a class="docuchain-header-logo" ui-sref="dapp.userDashboard">
+    <img ng-src="{{logoPath}}" height="75" />
+  </a>
+  <a
+    class="docuchain-sidebar-toggle"
+    href="javascript:void(0);"
+    ng-click="sidebarActiveFun()"
+  ></a>
+  <div class="docuchain-count-list">
+    <ul>
+      <li>
+        <a href="javascript:void(0);">
+          <div class="countList">
+            <div class="shipnamelist">
+              <h1>Vessel Name</h1>
+              <h3 class="bluelight">{{headerDetails.vesselsName}}</h3>
+            </div>
+            <div class="shipimage" ng-click="vesselsInformation()">
+              <img src="image/topVesselscount.png" />
+            </div>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:void(0);" ng-click="documentTypeFilter('Active')">
+          <div class="countList">
+            <div class="shipnamelist">
+              <h1>Active</h1>
+              <h2 class="textgreen">{{headerDetails.activeCount}}</h2>
+            </div>
+            <div class="shipimage">
+              <img src="image/active.png" />
+            </div>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:void(0);" ng-click="documentTypeFilter('Renewal')">
+          <div class="countList">
+            <div class="shipnamelist">
+              <h1>Renewal</h1>
+              <h2 class="textorange">{{headerDetails.renewelCount}}</h2>
+            </div>
+            <div class="shipimage">
+              <img src="image/renewal.png" />
+            </div>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:void(0);" ng-click="documentTypeFilter('Expired')">
+          <div class="countList">
+            <div class="shipnamelist">
+              <h1>Expired</h1>
+              <h2 class="red">{{headerDetails.expiryedCount}}</h2>
+            </div>
+            <div class="shipimage">
+              <img src="image/topExpired.png" />
+            </div>
+          </div>
+        </a>
+      </li>
+      <li>
+        <a href="javascript:void(0);" ng-click="documentTypeFilter('Missing')">
+          <div class="countList">
+            <div class="shipnamelist">
+              <h1>Missing</h1>
+              <h2 class="grayclr">{{headerDetails.missingCount}}</h2>
+            </div>
+            <div class="shipimage">
+              <img src="image/missing4.png" />
+            </div>
+          </div>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <ul class="docuchain-app-nav">
+    <li class="dropdown">
+      <a
+        class="app-nav__item animated infinite swing"
+        href="javascript:void(0)"
+        aria-label="Show notifications"
+        ng-show="notificationCountList && notificationCountList.length >= 0"
+        ng-click="notification()"
+      >
+        <img src="image/notification.png" alt="notification" />
+        <span
+          ng-show="notificationCountList && notificationCountList.length > 0"
+          >{{notificationCountList.length }}</span
+        >
+      </a>
+      <a
+        class="app-nav__item animated infinite"
+        href="javascript:void(0)"
+        aria-label="Show notifications"
+        ng-if="!notificationCountList"
+        ng-click="notification()"
+      >
+        <img src="image/notification.png" alt="notification" />
+        <span
+          ng-show="notificationCountList && notificationCountList.length > 0"
+          >{{notificationCountList.length }}</span
+        >
+      </a>
+      <a
+        class="app-nav__item animated infinite swing"
+        href="javascript:void(0)"
+        ng-click="faq()"
+      >
+        <img src="image/faqIcons.png" alt="notification" />
+      </a>
+      <ul class="app-notification dropdown-menu dropdown-menu-right">
+        <li class="app-notification__title">Notifications</li>
+
+        <li
+          class="app-notification__content"
+          ng-repeat="list in notificationList | limitTo:5"
+          ng-click="notification()"
+        >
+          <a
+            class="app-notification__item"
+            href="javascript:void(0);"
+            ng-if="list.color == 'Green'"
+          >
+            <span class="app-notification__icon">
+              <img
+                ng-if="list.notificationType == 'Approval page'"
+                src="image/notifyGreenIcon.png"
+                ng-click="linkToApproveDocument(list)"
+              />
+              <img
+                ng-if="list.notificationType == 'Task page'"
+                src="image/document-green.png"
+                ng-click="linkToTaskManagement(list.taskId)"
+              />
+              <img
+                ng-if="list.notificationType == 'Document List Page'"
+                src="image/document-green.png"
+                ng-click="linkToExpiryDoc(list.shipId)"
+              />
+              <img
+                ng-if="list.notificationType == 'User request page'"
+                src="image/userview.png"
+                ng-click="linkToAdminApproveDoc(list.shipId)"
+              />
+            </span>
+            <div>
+              <p class="app-notification__message">{{list.notificationName}}</p>
+              <p class="app-notification__meta">{{list.notifiedOn}}</p>
+            </div>
+          </a>
+
+          <a
+            class="app-notification__item"
+            href="javascript:void(0);"
+            ng-if="list.color == 'Red'"
+          >
+            <span class="app-notification__icon">
+              <img
+                ng-if="list.notificationType == 'Approval page'"
+                src="image/notifyredIcon.png"
+                ng-click="linkToApproveDocument(list)"
+              />
+              <img
+                ng-if="list.notificationType == 'Task page'"
+                src="image/document-red.png"
+                ng-click="linkToTaskManagement(list.taskId)"
+              />
+              <img
+                ng-if="list.notificationType == 'Document List Page'"
+                src="image/document-red.png"
+                ng-click="linkToExpiryDoc(list.shipId)"
+              />
+              <img
+                ng-if="list.notificationType == 'User request page'"
+                src="image/userview.png"
+                ng-click="linkToAdminApproveDoc(list.shipId)"
+              />
+            </span>
+            <div>
+              <p class="app-notification__message">{{list.notificationName}}</p>
+              <p class="app-notification__meta">{{list.notifiedOn}}</p>
+            </div>
+          </a>
+
+          <a
+            class="app-notification__item"
+            href="javascript:void(0);"
+            ng-if="list.color == 'Yellow'"
+          >
+            <span class="app-notification__icon">
+              <img
+                ng-if="list.notificationType == 'Approval page'"
+                src="image/notifyyellowIcon.png"
+                ng-click="linkToApproveDocument(list)"
+              />
+              <img
+                ng-if="list.notificationType == 'Task page'"
+                src="image/document-yellow.png"
+                ng-click="linkToTaskManagement(list.taskId)"
+              />
+              <img
+                ng-if="list.notificationType == 'Document List Page'"
+                src="image/document-yellow.png"
+                ng-click="linkToExpiryDoc(list.shipId)"
+              />
+              <img
+                ng-if="list.notificationType == 'User request page'"
+                src="image/userview.png"
+                ng-click="linkToAdminApproveDoc(list.shipId)"
+              />
+            </span>
+            <div>
+              <p class="app-notification__message">{{list.notificationName}}</p>
+              <p class="app-notification__meta">{{list.notifiedOn}}</p>
+            </div>
+          </a>
+        </li>
+
+        <li class="app-notification__footer">
+          <a href="javascript:void(0);" ng-click="notification()"
+            >See all Notifications.</a
+          >
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a
+        class="app-nav__item"
+        aria-label="Show notifications"
+        data-toggle="modal"
+        data-target="#logoutlog"
+      >
+        <img src="image/logout.png" alt="logout" />
+      </a>
+    </li>
+  </ul>
+
+  <div class="doculogo">
+    <a href="javascript:void(0);">
+      <img src="image/docuchainLogo.png" />
+    </a>
+  </div>
+</header>
+<toaster-container
+  toaster-options="{'time-out': 3000,'animation-class':'toaster-top-center'}"
+  class="toaster-top-center"
+></toaster-container>
+
+<div class="logout">
+  <div class="modal fade" id="logoutlog" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="logoutdiv">
+            <img src="image/logoutIcon.png" />
+            <h1>Logout</h1>
+          </div>
+        </div>
+        <div class="modal-footer1">
+          <button
+            type="button"
+            class="btnlgt logoutyes"
+            ng-click="logout()"
+            id="logout"
+          >
+            Yes
+          </button>
+          <button type="button" class="btnlgt logoutno" data-dismiss="modal">
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  class="app-content"
+  ng-controller="UserVesselDocumentEBDController"
+  ng-init="getAllExpiryList();getAllGroupList();"
+>
+  <div class="docubodyTitle">
+    <ul id="breadcrumb">
+      <li>
+        <a ui-sref="dapp.userVesselDocument">
+          <span class="icon icon-beaker"> </span> Vessel Documents</a
+        >
+      </li>
+      <li ng-show="libshipName != null">
+        <a href="javascript:void(0);">
+          <span class="icon icon-beaker"> </span> {{libshipName}}</a
+        >
+      </li>
+    </ul>
+  </div>
+  <div class="docuchainContent">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="docuuserdoculist">
+          <div class="tab" role="tabpanel">
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active">
+                <a
+                  ui-sref="dapp.userVesselDocumentEBD"
+                  aria-controls="home"
+                  role="tab"
+                  data-toggle="tab"
+                  >Expiry Based Document</a
+                >
+              </li>
+              <li role="presentation">
+                <a
+                  href="javascript:void(0);"
+                  aria-controls="profile"
+                  role="tab"
+                  data-toggle="tab"
+                  >Voyage Specific Document</a
+                >
+              </li>
+            </ul>
+            <div class="tab-content tabs">
+              <div
+                role="tabpanel"
+                class="tab-pane fade in active"
+                id="Section1"
+              >
+                <div class="vessellistable">
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="datatableEntry">
+                        <label
+                          >Show <input type="text" ng-model="itemsPerPage" />of
+                          <span>{{expiryDocumentHolderListLen}}</span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="filtersearchoption">
+                        <div class="filterbox">
+                          <label>Filter by Document Status</label>
+                          <div class="filterselect">
+                            <select
+                              ng-model="selectStatus"
+                              ng-change="documentTypeFilter(selectStatus)"
+                            >
+                              <option value="">All</option>
+                              <option value="Active">Active</option>
+                              <option value="Renewal">Renewal</option>
+                              <option value="Expired">Expired</option>
+                              <option value="Missing">Missing</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="docuchainSearchbox">
+                          <div class="searchInput">
+                            <input
+                              type="text"
+                              placeholder="Search"
+                              ng-model="searchEBD"
+                            />
+                            <button
+                              type="button"
+                              class="searchIcon"
+                              ng-click="toasterCheck()"
+                            >
+                              <i class="fa fa-search" aria-hidden="true"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-12 col-xs-12">
+                      <div class="taskMangeTable table-responsive">
+                        <table>
+                          <thead>
+                            <tr>
+                              <th class="text-center addwidth50">
+                                <div class="clearcheckbox">
+                                  <label class="control control--checkbox">
+                                    <input
+                                      type="checkbox"
+                                      ng-model="checkall"
+                                      ng-click="checkUncheckAll(expiryDocumentHolderList)"
+                                    />
+                                    <div class="control__indicator"></div>
+                                  </label>
+                                </div>
+                              </th>
+
+                              <th
+                                ng-click="orderByField='documentHolderName'; reverseSort = !reverseSort"
+                              >
+                                Certificate Name
+                                <i
+                                  class="fa fa-sort float-right"
+                                  aria-hidden="true"
+                                ></i>
+                              </th>
+                              <th
+                                ng-click="orderByField='certificateNumber'; reverseSort = !reverseSort"
+                              >
+                                Certificate No
+                                <i
+                                  class="fa fa-sort float-right"
+                                  aria-hidden="true"
+                                ></i>
+                              </th>
+                              <th
+                                ng-click="orderByField='issuingAuthority'; reverseSort = !reverseSort"
+                              >
+                                Issuing Authority
+                                <i
+                                  class="fa fa-sort float-right"
+                                  aria-hidden="true"
+                                ></i>
+                              </th>
+                              <th
+                                ng-click="orderByField='placeOfIssue'; reverseSort = !reverseSort"
+                              >
+                                Place of Issue
+                                <i
+                                  class="fa fa-sort float-right"
+                                  aria-hidden="true"
+                                ></i>
+                              </th>
+                              <th
+                                ng-click="orderByField='issueDateString'; reverseSort = !reverseSort"
+                              >
+                                Date of Issue
+                                <i
+                                  class="fa fa-sort float-right"
+                                  aria-hidden="true"
+                                ></i>
+                              </th>
+                              <th
+                                ng-click="orderByField='expiryDateString'; reverseSort = !reverseSort"
+                              >
+                                Date of Expiry
+                                <i
+                                  class="fa fa-sort float-right"
+                                  aria-hidden="true"
+                                ></i>
+                              </th>
+                              <th class="text-center vesselactions">Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr
+                              dir-paginate="expiryDocument in expiryDocumentHolderListFilter | filter:searchEBD | itemsPerPage:itemsPerPage | orderBy:orderByField:reverseSort"
+                              current-page="currentPage"
+                            >
+                              <td class="text-center">
+                                <div class="clearcheckbox">
+                                  <label
+                                    class="control control--checkbox"
+                                    ng-show="expiryDocument.id"
+                                  >
+                                    <input
+                                      type="checkbox"
+                                      ng-model="expiryDocument.checked"
+                                      ng-change="updateCheckall()"
+                                    />
+                                    <div class="control__indicator"></div>
+                                  </label>
+                                </div>
+                              </td>
+
+                              <td>
+                                <img
+                                  class="ebd-image"
+                                  src="image/file-gray.png"
+                                  ng-show="!expiryDocument.statusColor"
+                                />
+                                <img
+                                  class="ebd-image"
+                                  ng-src="image/file-{{expiryDocument.statusColor}}.png"
+                                  ng-show="expiryDocument.statusColor"
+                                />{{expiryDocument.documentHolderName}}
+                              </td>
+
+                              <td>{{expiryDocument.certificateNumber}}</td>
+                              <td>{{expiryDocument.issuingAuthority}}</td>
+                              <td>{{expiryDocument.placeOfIssue}}</td>
+                              <td>{{expiryDocument.issueDateString}}</td>
+                              <td>{{expiryDocument.expiryDateString}}</td>
+
+                              <td
+                                class="text-center"
+                                ng-show="!expiryDocument.id"
+                              >
+                                <button
+                                  type="button"
+                                  class="gray editBtn"
+                                  ng-disabled="!expiryDocument.id"
+                                  data-toggle="modal"
+                                  data-target="#viewEBD"
+                                  data-backdrop="static"
+                                >
+                                  <i
+                                    class="fa fa-eye"
+                                    aria-hidden="true"
+                                    ng-show="roleIdForView == 5"
+                                  ></i>
+                                  <i
+                                    class="fa fa-pencil"
+                                    aria-hidden="true"
+                                    ng-show="roleIdForView != 5"
+                                  ></i>
+                                </button>
+                                <button
+                                  type="button"
+                                  class="btned editBtn"
+                                  tooltips
+                                  tooltip-template="Document upload"
+                                  ng-show="sessionObject.roleId!=5"
+                                  data-toggle="modal"
+                                  data-target="#fileupload"
+                                  ng-click="storeDocumentholder(expiryDocument)"
+                                  data-backdrop="static"
+                                >
+                                  <i
+                                    class="fa fa-upload"
+                                    aria-hidden="true"
+                                  ></i>
+                                </button>
+                                <a
+                                  class="gray editBtn"
+                                  style="display: inline-block; cursor: pointer"
+                                  ng-class="{'disabled-link': !expiryDocument.id}"
+                                  ng-href="{{expiryDocument.documentDownloadUrl}}"
+                                >
+                                  <i
+                                    class="fa fa-download"
+                                    aria-hidden="true"
+                                  ></i>
+                                </a>
+                                <button
+                                  type="button"
+                                  class="gray editBtn"
+                                  ng-disabled="!expiryDocument.id"
+                                  data-toggle="modal"
+                                  data-target="#viewtasks"
+                                  data-backdrop="static"
+                                >
+                                  <i
+                                    class="fa fa-history"
+                                    aria-hidden="true"
+                                  ></i>
+                                </button>
+                                <button
+                                  type="button"
+                                  class="gray editBtn"
+                                  ng-disabled="!expiryDocument.id"
+                                  data-toggle="modal"
+                                  data-target="#viewtasks"
+                                  data-backdrop="static"
+                                >
+                                  <i class="fa fa-tag" aria-hidden="true"></i>
+                                </button>
+                              </td>
+
+                              <td
+                                class="text-center"
+                                ng-show="expiryDocument.id"
+                              >
+                                <button
+                                  type="button"
+                                  class="btned editBtn"
+                                  tooltips
+                                  tooltip-template="View & Edit document"
+                                  ng-click="viewExpiryDocumentInformation(expiryDocument)"
+                                >
+                                  <i
+                                    class="fa fa-eye"
+                                    aria-hidden="true"
+                                    ng-show="roleIdForView == 5"
+                                  ></i>
+                                  <i
+                                    class="fa fa-pencil"
+                                    aria-hidden="true"
+                                    ng-show="roleIdForView != 5"
+                                  ></i>
+                                </button>
+                                <button
+                                  type="button"
+                                  class="btned editBtn"
+                                  tooltips
+                                  tooltip-template="Document upload"
+                                  ng-show="sessionObject.roleId!=5"
+                                  data-toggle="modal"
+                                  data-target="#fileupload"
+                                  ng-click="storeDocumentholder(expiryDocument)"
+                                  data-backdrop="static"
+                                >
+                                  <i
+                                    class="fa fa-upload"
+                                    aria-hidden="true"
+                                  ></i>
+                                </button>
+                                <a
+                                  class="btned editBtn"
+                                  tooltips
+                                  tooltip-template="Download document"
+                                  ng-href="{{expiryDocument.documentDownloadUrl}}"
+                                >
+                                  <i
+                                    class="fa fa-download"
+                                    aria-hidden="true"
+                                  ></i>
+                                </a>
+                                <button
+                                  type="button"
+                                  class="btned editBtn"
+                                  tooltips
+                                  tooltip-template="Document history"
+                                  ng-click="openHistoryPopup(expiryDocument)"
+                                >
+                                  <i
+                                    class="fa fa-history"
+                                    aria-hidden="true"
+                                  ></i>
+                                </button>
+                                <button
+                                  type="button"
+                                  class="btned editBtn"
+                                  tooltips
+                                  tooltip-template="Tag the document to group"
+                                  tooltip-side="left"
+                                  data-toggle="modal"
+                                  data-target="#tagGroupPopup"
+                                  ng-click="openGroupTagEBDPopup(expiryDocument)"
+                                  data-backdrop="static"
+                                >
+                                  <i class="fa fa-tag" aria-hidden="true"></i>
+                                </button>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <div
+                          class="not-found-div"
+                          ng-show="(expiryDocumentHolderList | filter:searchEBD).length==0"
+                        >
+                          Loading placeholder...
+                        </div>
+                        <div class="not-found-div" ng-show="fielterFailure==0">
+                          No record found...
+                        </div>
+                      </div>
+                      <div class="vesselstablebottom">
+                        <button
+                          type="button"
+                          class="btned sharebtn pull-right"
+                          data-toggle="modal"
+                          data-backdrop="static"
+                          ng-click="sharePopup()"
+                        >
+                          <i class="fa fa-share-alt" aria-hidden="true"></i
+                          >Share
+                        </button>
+                        <dir-pagination-controls
+                          direction-links="true"
+                          boundary-links="true"
+                        ></dir-pagination-controls>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="librariy-pdfview">
+    <div class="modal fade" id="viewExpiryDocument" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">
+              Document Information -
+              {{viewDocumentObjectInfo.documentHolderName}}
+            </h4>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              ng-click="closeViewPopup()"
+            >
+              ×
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-lg-8 col-sm-8 col-xs-12">
+                <div class="pdf-viewer">
+                  <div class="pdffile">
+                    <div class="pdficondiv">
+                      <iframe
+                        ng-src="{{viewDocumentUrl}}"
+                        type="application/pdf"
+                        width="500"
+                        height="600"
+                      ></iframe>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 col-sm-4 col-xs-12 pdfborder">
+                <div class="pdf-viewerform">
+                  <div class="library-content">
+                    <form>
+                      <div class="form-group">
+                        <label> Issuing Authority </label>
+                        <input type="text" ng-model="issuingAuthorityEdit" />
+                      </div>
+                      <div class="form-group">
+                        <label> Certificate No </label>
+                        <input type="text" ng-model="certificateNumberEdit" />
+                      </div>
+                      <div class="form-group">
+                        <label> Place of Issue </label>
+                        <input type="text" ng-model="placeOfIssueEdit" />
+                      </div>
+                      <div class="form-group">
+                        <label> Date of Issue </label>
+                        <input
+                          type="text"
+                          placeholder="dd-MM-yyyy"
+                          ng-model="issueDateStringEdit"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label> Date of expiry </label>
+                        <input
+                          type="text"
+                          placeholder="dd-MM-yyyy"
+                          ng-model="expiryDateStringEdit"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label> Last Annual </label>
+                        <input
+                          type="text"
+                          placeholder="dd-MM-yyyy"
+                          ng-model="lastAnnualStringEdit"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label> Next annual </label>
+                        <input
+                          type="text"
+                          placeholder="dd-MM-yyyy"
+                          ng-model="nextAnnualStringEdit"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label> Remarks </label>
+                        <textarea ng-model="remarksEdit"></textarea>
+                      </div>
+                      <div class="pdfviewbtn" ng-show="roleIdForView != 5">
+                        <input
+                          type="submit"
+                          class="btngeo submitbtn clr448aff"
+                          ng-click="updateExpiryDoc()"
+                          value="UPDATE"
+                        />
+                        <input
+                          type="submit"
+                          class="btngeo submitbtn clr448aff"
+                          class="close"
+                          data-dismiss="modal"
+                          ng-click="closeViewPopup()"
+                          value="CANCEL"
+                        />
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="librariy-pdfview">
+    <div class="modal fade" id="createEBD" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">
+              Document Information - {{dcoumentHolderName}}
+            </h4>
+            <button type="button" class="close" data-dismiss="modal">×</button>
+          </div>
+          <div class="modal-body">
+            <form name="libcreate" ng-submit="createDocument()">
+              <div class="row">
+                <div class="col-lg-8 col-sm-8 col-xs-12">
+                  <div class="pdf-viewer">
+                    <div class="pdffile">
+                      <div class="pdficondiv">
+                        <iframe
+                          ng-src="{{convertedFile}}"
+                          width="100%"
+                          height="500"
+                        ></iframe>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-sm-4 col-xs-12 pdfborder">
+                  <div class="pdf-viewerform">
+                    <div class="library-content">
+                      <div class="form-group">
+                        <label> Issuing Authority </label>
+                        <input
+                          type="text"
+                          name="issuingAuthority"
+                          customFocus
+                          ng-model="issuingAuthority"
+                          placeholder="Issuing Authority"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label> Certificate No </label>
+                        <input
+                          type="text"
+                          name="certificateNo"
+                          customFocus
+                          ng-model="libcreate.certificateNumber"
+                          placeholder="Certificate No"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label> Place of Issue </label>
+                        <input
+                          type="text"
+                          name="placeIssue"
+                          customFocus
+                          ng-model="libcreate.placeOfIssue"
+                          placeholder=" Place of issue"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label> Date of Issue </label>
+                        <div class="datepickerinput">
+                          <input
+                            class="form-control"
+                            custom-focus
+                            class="text-box"
+                            placeholder="Date of issue"
+                            moment-picker="ctrl.issueDate"
+                            locale="en"
+                            format="DD-MM-YYYY"
+                            ng-model="libcreate.dateOfIssue"
+                            ng-model-options="{ updateOn: 'blur' }"
+                          />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label> Date of expiry </label>
+                        <div class="datepickerinput">
+                          <input
+                            class="form-control"
+                            placeholder="Date of expiry"
+                            moment-picker="ctrl.dateOfExpiry"
+                            locale="en"
+                            format="DD-MM-YYYY"
+                            ng-model="libcreate.dateOfExpiry"
+                            ng-model-options="{ updateOn: 'blur' }"
+                          />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label> Last Annual </label>
+                        <div class="datepickerinput">
+                          <input
+                            class="form-control"
+                            placeholder="Last annual"
+                            moment-picker="ctrl.lastAnnual"
+                            locale="en"
+                            format="DD-MM-YYYY"
+                            ng-model="libcreate.lastAnnual"
+                            ng-model-options="{ updateOn: 'blur' }"
+                          />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label> Next annual </label>
+                        <div class="datepickerinput">
+                          <input
+                            class="form-control"
+                            placeholder="Next annual"
+                            moment-picker="ctrl.nextAnnual"
+                            locale="en"
+                            format="DD-MM-YYYY"
+                            ng-model="libcreate.nextAnnual"
+                            ng-model-options="{ updateOn: 'blur' }"
+                          />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label> Remarks </label>
+                        <textarea
+                          ng-model="libcreate.remarks"
+                          name="createRemarks"
+                          ng-maxlength="200"
+                        ></textarea>
+                        <span
+                          ng-show="libcreate.createRemarks.$error.maxlength"
+                          style="color: red"
+                          >Please enter less than 200 characters</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="pdfviewbtn">
+                <input
+                  type="submit"
+                  class="btngeo submitbtn clr448aff"
+                  ng-disabled="libcreate.$invalid"
+                  value="SUBMIT"
+                />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="uploadfile">
+    <div class="modal fade" id="fileupload" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Upload File - {{dcoumentHolderName}}</h4>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              ng-click="clearFileField()"
+            >
+              &times;
+            </button>
+          </div>
+          <div class="modal-body">
+            <form
+              id="demo-upload"
+              ng-submit="uploadFile()"
+              name="fileUploadForm"
+            >
+              <input
+                type="file"
+                file-model="myFile"
+                name="filename"
+                id="filename"
+              />
+              <div
+                ng-show="fileUploadForm.$submitted || fileUploadForm.filename.$touched"
+              >
+                <div
+                  ng-show="fileUploadForm.filename.$error.required"
+                  style="color: red"
+                >
+                  Please select the file
+                </div>
+              </div>
+              <div class="modal-footer1">
+                <input
+                  type="submit"
+                  class="btngeo submitbtn clr448aff"
+                  value="Submit"
+                />
+              </div>
+              <div
+                ng-show="scanfail"
+                style="text-align: center; margin-top: 10px"
+              >
+                <span style="color: red">{{scanMsg}}</span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="historypop">
+    <div class="modal fade" id="historyEBD" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">
+              History - {{historyEBDObject.documentHolderName}}
+            </h4>
+            <button type="button" class="close" data-dismiss="modal">×</button>
+          </div>
+          <div class="modal-body">
+            <div class="historybody">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Version</th>
+                    <th>Uploaded By</th>
+                    <th>Recent Actions</th>
+                    <th>Date</th>
+                    <th>Comment</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    dir-paginate="docHistroy in documentHolderHistory|filter:searchHistroyEBD |itemsPerPage:itemsPerPageHistory"
+                    current-page="currentPage"
+                  >
+                    <td>V{{$index + 1}}</td>
+                    <td>{{docHistroy.uploadedUserName}}</td>
+                    <td>{{docHistroy.approvedBy}}</td>
+                    <td class="timecount">
+                      {{docHistroy.modifiedDate}}
+                      <span class="time"></span>
+                    </td>
+                    <td>{{docHistroy.remarks}}</td>
+                    <td class="text-center">
+                      <a
+                        class="btned editBtn"
+                        tooltips
+                        tooltip-template="Download document"
+                        ng-href="{{docHistroy.documentDownloadUrl}}"
+                      >
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="vesselstablebottom">
+              <dir-pagination-controls
+                max-size="5"
+                direction-links="true"
+                boundary-links="true"
+              ></dir-pagination-controls>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="shareview">
+    <div class="modal fade" id="sharepopup" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Group Share</h4>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              ng-click="close()"
+            >
+              &times;
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="sharetable">
+              <div class="searchshare">
+                <div class="searchInput">
+                  <input
+                    type="text"
+                    placeholder="Group Name / Keyword / Email"
+                    ng-model="groupSearch"
+                  />
+                  <button
+                    type="button"
+                    class="searchIcon"
+                    ng-click="showTable()"
+                  >
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="sharetablefield" ng-show="showgroup">
+                <div class="col-lg-12">
+                  <div class="sharet">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Group Name</th>
+                          <th>Keyword</th>
+                          <th>Email Id</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          dir-paginate="group in groupList|filter:groupSearch|itemsPerPage:5"
+                          pagination-id="groupPage"
+                        >
+                          <td>{{group.groupName}}</td>
+                          <td>{{group.keyword}}</td>
+                          <td>{{group.emailId}}</td>
+                          <td>
+                            <button
+                              type="button"
+                              class="shareviewbtn"
+                              ng-click="viewGroup(group)"
+                            >
+                              View
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="pull-right">
+                    <dir-pagination-controls
+                      max-size="5"
+                      pagination-id="groupPage"
+                      direction-links="true"
+                      boundary-links="true"
+                    ></dir-pagination-controls>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-12" ng-show="createbutton">
+                <div class="sharecreatenetbtn">
+                  <button
+                    type="button"
+                    class="sharenewbtn"
+                    ng-click="ShowCreateGroup()"
+                  >
+                    <img src="image/add-user-button.png" />Create Group
+                  </button>
+                </div>
+              </div>
+              <div class="sharenewfield" ng-show="IsVisible">
+                <div class="sharefield">
+                  <form name="creategroupForm">
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label
+                          >Group Name
+                          <span style="color: Red">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Group Name"
+                          ng-model="groupName"
+                          custom-focus
+                          class="text-box"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label>Keyword</label>
+                        <input
+                          type="text"
+                          placeholder="Keyword"
+                          ng-model="keyword"
+                          custom-focus
+                          class="text-box"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="form-group">
+                        <label
+                          >Email Id
+                          <span style="color: Red">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Email Id"
+                          ng-model="group.emailId"
+                          custom-focus
+                          class="text-box"
+                          name="Email"
+                          ng-pattern="/^((([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})),?)*$/"
+                          required
+                        />
+                        <span
+                          style="color: Red"
+                          ng-show="creategroupForm.Email.$dirty&&creategroupForm.Email.$error.pattern"
+                          >Please Enter Valid Email</span
+                        >
+                      </div>
+                    </div>
+                    <div class="col-lg-4" ng-show="sessionObject.roleId != 3">
+                      <div class="form-group">
+                        <div class="checbtn">
+                          <div class="sharecheckbox">
+                            <div class="clearcheckbox">
+                              <label class="control control--checkbox">
+                                <input
+                                  type="checkbox"
+                                  ng-model="shareToOtherShips"
+                                />
+                                <div class="control__indicator"></div>
+                              </label>
+                            </div>
+                          </div>
+                          <label>Create to other ships</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="vesselmulti" ng-show="shareToOtherShips">
+                      <div class="col-lg-4">
+                        <div class="form-group">
+                          <label
+                            >Vessel Name
+                            <span style="color: Red">*</span>
+                          </label>
+                          <div class="userMultiSelect">
+                            <div class="vesselType">
+                              <ui-select
+                                multiple
+                                ng-model="group.vesselSelectedList"
+                                custom-focus
+                                class="text-box"
+                                theme="bootstrap"
+                                close-on-select="true"
+                                title="Choose a Vessel"
+                                remove-selected="false"
+                              >
+                                <ui-select-match placeholder="Select Vessel"
+                                  >{{$item.shipName}}</ui-select-match
+                                >
+                                <ui-select-choices
+                                  repeat="user in vesselList | filter: $select.search | orderBy:'shipName'"
+                                >
+                                  <div ng-bind-html="user.shipName"></div>
+                                  <small> IMO: {{user.officialNo}} </small>
+                                </ui-select-choices>
+                              </ui-select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="shareselectDocument">
+                <div class="col-lg-6">
+                  <div class="sharedocument">
+                    <h1>Selected Document</h1>
+                    <div
+                      class="sharecheckbox"
+                      ng-repeat="selecteddoc in selctedExpiredDocumentList"
+                    >
+                      <div class="clearcheckbox">
+                        <label
+                          class="control control--checkbox"
+                          ng-show="selecteddoc.id"
+                        >
+                          <input
+                            type="checkbox"
+                            ng-checked="true"
+                            ng-model="active"
+                            ng-click="selecetedCheckBoxValue(selecteddoc, active)"
+                          />
+                          <div class="control__indicator"></div>
+                          {{selecteddoc.documentHolderName}}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-6">
+                  <div class="sharedocument">
+                    <h1>Existing Document</h1>
+                    <div class="sharescroll">
+                      <div
+                        class="sharecheckbox"
+                        ng-repeat="expirydoc in groupExpiryDoclist"
+                      >
+                        <div class="clearcheckbox">
+                          <label
+                            class="control control--checkbox"
+                            ng-show="expirydoc.id"
+                          >
+                            <input
+                              type="checkbox"
+                              ng-model="expirydoc.Selected"
+                              ng-checked="selectall"
+                            />
+                            <div class="control__indicator"></div>
+                            {{expirydoc.documentHolderName}}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer1">
+              <div class="checbtn" ng-show="showUpdateIngroupCheck">
+                <div class="sharecheckbox">
+                  <div class="clearcheckbox">
+                    <label class="control control--checkbox">
+                      <input type="checkbox" ng-model="updateInGroup" />
+                      <div class="control__indicator"></div>
+                    </label>
+                  </div>
+                </div>
+                <label>Update Group</label>
+              </div>
+              <button
+                type="button"
+                class="btngeo sharesendbtn pull-right"
+                ng-click="shareexpirydocument(group)"
+              >
+                Send
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="confplaceholder">
+    <div class="modal fade" id="tagGroupPopup" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Group Tag</h4>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              ng-click="clearTagDocumentFields()"
+            >
+              &times;
+            </button>
+          </div>
+          <div class="modal-body">
+            <form name="groupTag" ng-submit="tagExpiryDocumentToGRoup()">
+              <div class="subscriptbody">
+                <div class="form">
+                  <div class="form-group">
+                    <label>Group</label>
+                    <div class="vesselType">
+                      <select ng-model="gorupSelected" required>
+                        <option value="">Select group</option>
+                        <option
+                          ng-repeat="group in groupListExpiry"
+                          value="{{group.id}}"
+                        >
+                          {{group.groupName}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer1">
+                <button
+                  type="submit"
+                  class="btngeo submitbtn clr448aff"
+                  ng-disabled="groupTag.$invalid"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="preloader" ng-show="loader">
+    <div id="cssload-loader">
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+    </div>
+  </div>
+</div>

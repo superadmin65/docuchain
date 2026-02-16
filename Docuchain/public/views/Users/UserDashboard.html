@@ -1,0 +1,332 @@
+<div
+  class="app-content"
+  ng-app="dapp"
+  ng-controller="UserDashboardController"
+  ng-init="getAllVesselListAndCount()"
+>
+  <div class="docuchainContent">
+    <div class="docuchain-admin-title">
+      <h1>Expiry Based Documents Statistics</h1>
+    </div>
+    <div class="docuchain-admin-table">
+      <div class="row">
+        <div class="col-lg-12 col-sm-12 col-xs-12">
+          <div class="docuchainTable">
+            <div class="searchadminbox">
+              <div class="docuchainSearchbox">
+                <div class="searchInput" ng-show="{{sessionObject.roleId}}!=3">
+                  <input
+                    type="text"
+                    ng-model="viewShipProfilesearch"
+                    placeholder="Search"
+                  />
+                  <button type="button" class="searchIcon">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="docuadmin-table taskMangeTable table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th rowspan="4" class="text-center">Vessels</th>
+                    <th
+                      rowspan="3"
+                      class="addwidth150"
+                      ng-click="orderByField='vesselsName'; reverseSort = !reverseSort"
+                    >
+                      Vessels Name
+                      <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                    </th>
+                    <th
+                      rowspan="2"
+                      class="addwidth150"
+                      ng-click="orderByField='imo'; reverseSort = !reverseSort"
+                    >
+                      IMO Number
+                      <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                    </th>
+                    <th
+                      rowspan="2"
+                      class="addwidth150"
+                      ng-click="orderByField='shipTypes'; reverseSort = !reverseSort"
+                    >
+                      Type of Vessels
+                      <i class="fa fa-sort float-right" aria-hidden="true"></i>
+                    </th>
+                    <th colspan="5" class="text-center">Vessel Documents</th>
+                    <th
+                      rowspan="2"
+                      class="text-center"
+                      ng-click="orderByField='totalCount'; reverseSort = !reverseSort"
+                    >
+                      Total Vessel Documents<i
+                        class="fa fa-sort float-right"
+                        aria-hidden="true"
+                      ></i>
+                    </th>
+                  </tr>
+                  <tr>
+                    <th
+                      class="text-center"
+                      ng-click="orderByField='activeCount'; reverseSort = !reverseSort"
+                    >
+                      Active<i
+                        class="fa fa-sort float-right"
+                        aria-hidden="true"
+                      ></i>
+                    </th>
+                    <th
+                      class="text-center"
+                      ng-click="orderByField='renewelCount'; reverseSort = !reverseSort"
+                    >
+                      Renewal<i
+                        class="fa fa-sort float-right"
+                        aria-hidden="true"
+                      ></i>
+                    </th>
+                    <th
+                      class="text-center"
+                      ng-click="orderByField='expiryedCount'; reverseSort = !reverseSort"
+                    >
+                      Expired<i
+                        class="fa fa-sort float-right"
+                        aria-hidden="true"
+                      ></i>
+                    </th>
+                    <th
+                      class="text-center"
+                      ng-click="orderByField='pendingCount'; reverseSort = !reverseSort"
+                    >
+                      Pending<i
+                        class="fa fa-sort float-right"
+                        aria-hidden="true"
+                      ></i>
+                    </th>
+                    <th
+                      class="text-center"
+                      ng-click="orderByField='missingCount'; reverseSort = !reverseSort"
+                    >
+                      Missing<i
+                        class="fa fa-sort float-right"
+                        aria-hidden="true"
+                      ></i>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    dir-paginate="shipProfile in shipProfileList |filter:viewShipProfilesearch |itemsPerPage:itemsPerPage | orderBy:'vesselsName' | orderBy:orderByField:reverseSort"
+                    current-page="currentPage"
+                  >
+                    <td class="text-center">
+                      <img
+                        ng-if="shipProfile.shipProfilePicPath"
+                        ng-src="{{shipProfile.shipProfilePicPath}}"
+                      />
+                      <img
+                        ng-if="!shipProfile.shipProfilePicPath"
+                        ng-src="image/imageUpload.png"
+                      />
+                    </td>
+                    <td
+                      style="cursor: pointer"
+                      ng-click="openEBDState(shipProfile)"
+                    >
+                      {{shipProfile.vesselsName}}
+                    </td>
+                    <td ng-click="openEBDState(shipProfile)">
+                      {{shipProfile.imo}}
+                    </td>
+                    <td ng-click="openEBDState(shipProfile)">
+                      {{shipProfile.shipTypes}}
+                    </td>
+                    <td
+                      class="text-center"
+                      ng-click="openEBDState(shipProfile)"
+                    >
+                      {{shipProfile.activeCount}}
+                    </td>
+                    <td
+                      class="text-center"
+                      ng-click="openEBDState(shipProfile)"
+                    >
+                      {{shipProfile.renewelCount}}
+                    </td>
+                    <td
+                      class="text-center"
+                      ng-click="openEBDState(shipProfile)"
+                    >
+                      {{shipProfile.expiryedCount}}
+                    </td>
+                    <td
+                      class="text-center"
+                      ng-click="openEBDState(shipProfile)"
+                    >
+                      {{shipProfile.pendingCount}}
+                    </td>
+                    <td
+                      class="text-center"
+                      ng-click="openEBDState(shipProfile)"
+                    >
+                      {{shipProfile.missingCount}}
+                    </td>
+                    <td
+                      class="text-center"
+                      ng-click="openEBDState(shipProfile)"
+                    >
+                      {{shipProfile.totalCount}}
+                    </td>
+                  </tr>
+                  <tr
+                    ng-show="(shipProfileList|filter:viewShipProfilesearch).length==0"
+                  >
+                    <td colspan="10" class="not-found-div">No records found</td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- <div class="not-found-div" ng-show="(shipProfileList|filter:viewShipProfilesearch).length==0">No records found</div> -->
+            </div>
+            <dir-pagination-controls
+              direction-links="true"
+              boundary-links="true"
+            ></dir-pagination-controls>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="docuchain-admin-title">
+      <h1>Vessel tracker</h1>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12 col-xs-12" ng-show="roleId == 3">
+        <div class="locationNearest">
+          <button
+            type="button"
+            class="btnLatitude"
+            ng-click="buttonToaster()"
+            data-toggle="modal"
+            data-target="#geoLocation"
+            data-backdrop="static"
+          >
+            Geo Location
+          </button>
+        </div>
+      </div>
+      <div class="vesselMap">
+        <div class="row">
+          <div class="col-lg-12 col-sm-12 col-xs-12">
+            <div class="docuchainMapVictor">
+              <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d27358568.189688053!2d81.91242051691525!3d-5.483777987299326!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1533741469415"
+                            width="100%" height="350" frameborder="0" style="border:0" allowfullscreen></iframe> -->
+              <!-- <ui-gmap-google-map center="map.center" zoom="map.zoom" options="options"></ui-gmap-google-map> -->
+              <div ng-app="dogMap">
+                <ui-gmap-google-map
+                  center="map.center"
+                  zoom="map.zoom"
+                  draggable="false"
+                  options="options"
+                  bounds="map.bounds"
+                  control="googlemap"
+                >
+                  <ui-gmap-window
+                    show="show"
+                    coords="windowCoords"
+                    closeClick="closeClick()"
+                  >
+                    <div>
+                      Vessel Name : {{parkName}} <br />
+                      LO: {{longitude}} <br />
+                      LA: {{latitude}} <br />IMO: {{imo}} <br />Last Updated:
+                      {{updateDate}}
+                    </div>
+                  </ui-gmap-window>
+                  <ui-gmap-markers
+                    models="markers"
+                    coords="'self'"
+                    icon="'icon'"
+                    options="'options'"
+                    doRebuildAll="true"
+                    click="onClick"
+                  >
+                  </ui-gmap-markers>
+                </ui-gmap-google-map>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="preloader" ng-show="loader">
+    <div id="cssload-loader">
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+      <div class="cssload-dot"></div>
+    </div>
+  </div>
+</div>
+<!-- Delete Popup -->
+<div class="geoLocationPopup">
+  <div class="modal fade" id="geoLocation" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Geo Location</h4>
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <form name="geoForm">
+            <div class="form-group">
+              <label>Latitude</label>
+              <input
+                type="number"
+                ng-model="latitude"
+                custom-focus
+                class="text-box"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label>Longitude</label>
+              <input
+                type="number"
+                ng-model="longitute"
+                custom-focus
+                class="text-box"
+                required
+              />
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer1">
+          <button
+            type="button"
+            class="btngeo clearbtn"
+            ng-click="clearGeoLocation()"
+          >
+            CLEAR
+          </button>
+          <button
+            type="button"
+            class="btngeo submitbtn clr448aff"
+            data-dismiss="modal"
+            ng-disabled="geoForm.$invalid"
+            ng-click="addGeoLocation()"
+          >
+            SUBMIT
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

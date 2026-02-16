@@ -1,0 +1,52 @@
+<div class="docu-login-section" ng-app="dapp" ng-controller="LoginController">
+    <div class="docu-login-logo"  ng-nicescroll >
+        <div class="docu-form">
+            <div class="docu-logo">
+                <img src="image/logo.png" alt="logo">
+                <h1>Sign In</h1>
+            </div>
+            <div class="docu-form-div">
+                <form ng-submit="loginAdmin(login)" name="loginForm">
+                    <div class="docu-form-group">
+                        <input type="text" class="form-input" ng-model="login.userName" placeholder="User name" required>
+                    </div>
+                    <div class="docu-form-group">
+                        <input type="password" class="form-input" ng-model="login.password" placeholder="Password" required>
+                    </div>
+                    <!-- <div ng-hide="errorMessage">Please Enter Correct Username and Password</div> -->
+                    <div class="docu-form-group mtop40">
+                        <div class="boxes">
+                            <input type="checkbox" id="box-1">
+                            <label for="box-1">Remember Me</label>
+                        </div>
+                        <span class="forgt-pwd">
+                            <a ui-sref="dapp.forgotpassword">Forgot Password ?</a>
+                        </span>
+                    </div>
+                    <div class="docu-form-group text-center">
+                        <button type="submit" class="docu-submit-btn" id="login" ng-disabled="loginForm.$pristine|| loginForm.$invalid || isDisabled">Sign In</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="docu-group-logo">
+        <div class="docu-group">
+            <img src="image/GN-Logo.png">
+        </div>
+    </div>
+    <div class="preloader" ng-show="loader">
+        <div id="cssload-loader">
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+            <div class="cssload-dot"></div>
+        </div>
+    </div>
+    <toaster-container toaster-options="{'time-out': 5000 ,'animation-class': 'toast-top-center'}"></toaster-container>
+
+</div>

@@ -1,0 +1,9 @@
+45413 [main] WARN  o.s.l.odm.core.impl.ObjectMetaData - The Entry class User should be declared final
+31438 [main] WARN  o.s.l.odm.core.impl.ObjectMetaData - The Entry class User should be declared final
+27586 [main] WARN  o.s.l.odm.core.impl.ObjectMetaData - The Entry class User should be declared final
+1710147 [http-nio-8070-exec-5] WARN  o.s.web.servlet.PageNotFound - Request method 'GET' not supported
+25292 [main] WARN  o.s.l.odm.core.impl.ObjectMetaData - The Entry class User should be declared final
+26893 [main] WARN  o.s.l.odm.core.impl.ObjectMetaData - The Entry class User should be declared final
+25667 [main] WARN  o.s.l.odm.core.impl.ObjectMetaData - The Entry class User should be declared final
+24977 [main] WARN  o.s.l.odm.core.impl.ObjectMetaData - The Entry class User should be declared final
+25603 [main] WARN  o.s.l.odm.core.impl.ObjectMetaData - The Entry class User should be declared final
